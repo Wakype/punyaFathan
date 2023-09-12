@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 export default function Register() {
   let navigate = useNavigate();
+  const [ errorPeature, setErrorPeature] = React.useState('');
   const [errorName, setErrorName] = React.useState('');
   const [errorEmail, setErrorEmail] = React.useState('');
   const [errorPassword, setErrorPassword] = React.useState('');
@@ -18,7 +19,8 @@ export default function Register() {
   let dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [payload, setPayload] = React.useState({
-    username: '',
+    peature: '',
+    name: '',
     email: '',
     password: '',
     role: '',
@@ -61,9 +63,10 @@ export default function Register() {
           icon: 'success',
           title: response?.msg,
         });
-        return navigate('/login', { replace: true });
+        return navigate('/dashboard', { replace: true });
       } else {
         setMessageError(response?.response?.data?.msg);
+        setErrorPeature(response?.response?.data?.errors?.peature);
         setErrorName(response?.response?.data?.errors?.name);
         setErrorEmail(response?.response?.data?.errors?.email);
         setErrorPassword(response?.response?.data?.errors?.password);
@@ -104,8 +107,15 @@ export default function Register() {
               Welcome Back
             </h1>
             <Input
-              name="username"
-              label='username'
+              name="peature"
+              label='peature'
+              onChange={handleChange}
+              type="peature"
+              placeholder={"Enter your peature"}
+            />
+            <Input
+              name="name"
+              label='name'
               onChange={handleChange}
               type="name"
               placeholder={"Enter your username"}
@@ -127,8 +137,6 @@ export default function Register() {
             <Select
                 
                 name="Pilih role"
-                // value={payload.jenisKelamin}
-                // onChange={handleChange}
                 label={'Role'}
                 opsi1={'Administrator'}
                 opsi2="Petugas"

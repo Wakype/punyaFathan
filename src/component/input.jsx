@@ -8,7 +8,7 @@ export default function Input({ label, isError, textError, ...props }) {
       </label>
       <input
         {...props}
-        className="w-[450px] h-[50px] p-2 px-3 bg-transparent border-2 border-[#000000] outline-none  text-black rounded-lg "
+        className="w-[422px] h-[40px] p-2 px-3 bg-transparent border-2 border-[#000000] outline-none  text-black rounded-lg "
         id={label}
       />
 

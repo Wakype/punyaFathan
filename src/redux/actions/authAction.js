@@ -1,6 +1,8 @@
 import Cookies from 'js-cookie';
 import {
-    login
+
+  forgotPassword,
+    login, registerProses
 } from '../../Api/auth';
 
 export function authLogin(payload) {
@@ -44,50 +46,48 @@ export function authLogin(payload) {
 //     }
 //   };
 // }
-// export function authRegister(payload) {
-//   return async (dispatch) => {
-//     try {
-//       let response = await registerProses(payload);
-//       let data = response.data;
-//       console.log('data =>', data);
-//       dispatch({
-//         type: 'login',
-//         name: data?.user?.name,
-//         email: data?.user?.email,
-//         password: data?.user?.password,
-//         passwordConfirmation: data?.user?.passwordConfirmation,
-//         status: data?.user?.status,
-//         jenisKelamin: data?.user?.jeniskelamin,
-//         isAuth: true,
-//       });
-//       Cookies.set('myapps_token', data?.token);
-//       return data;
-//     } catch (err) {
-//       console.log(err);
-//       return err;
-//     }
-//   };
-// }
+export function authRegister(payload) {
+  return async (dispatch) => {
+    try {
+      let response = await registerProses(payload);
+      let data = response.data;
+      console.log('data =>', data);
+      dispatch({
+        peature:data?.user?.peature,
+        name: data?.user?.name,
+        email: data?.user?.email,
+        password: data?.user?.password,
+        role: data?.user?.role
+       
+      });
+      Cookies.set('myapps_token', data?.token);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+}
 
-// export function authForgot(payload) {
-//   return async (dispatch) => {
-//     try {
-//       let response = await forgotPassword(payload);
-//       let data = response.data;
-//       console.log('data =>', data);
-//       dispatch({
-//         type: 'login',
-//         email: data?.user?.email,
-//         isAuth: true,
-//       });
-//       Cookies.set('myapps_token', data?.token);
-//       return data;
-//     } catch (err) {
-//       console.log(err);
-//       return err;
-//     }
-//   };
-// }
+export function authForgot(payload) {
+  return async (dispatch) => {
+    try {
+      let response = await forgotPassword(payload);
+      let data = response.data;
+      console.log('data =>', data);
+      dispatch({
+        type: 'login',
+        email: data?.user?.email,
+        isAuth: true,
+      });
+      Cookies.set('myapps_token', data?.token);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+}
 
 // export function authReset(id,token,payload) {
 //   return async (dispatch) => {
