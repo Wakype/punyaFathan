@@ -31,7 +31,11 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
+<<<<<<< HEAD
     console.log("tes");
+=======
+    console.log("tes")
+>>>>>>> 6b2f4860512c0a41507f0ab6ef6fdc3e343d2130
     e.preventDefault();
     try {
       const response = await dispatch(authLogin(payload));
@@ -73,11 +77,16 @@ export default function Login() {
       console.log(err);
       Swal.fire("Gagal!", "Email tidak di temukan.", "error");
       alert("fail anda gagal login");
+<<<<<<< HEAD
     }
+=======
+    } 
+>>>>>>> 6b2f4860512c0a41507f0ab6ef6fdc3e343d2130
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
   return (
+<<<<<<< HEAD
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
         <div className="flex flex-col overflow-y-auto md:flex-row">
@@ -146,10 +155,75 @@ export default function Login() {
                 </button>
               </form>
               <hr className="my-8" />
+=======
+    <div>
+      <div className="w-screen h-full flex ">
+        <form onSubmit={handleSubmit}>
+          <div className="bg-white w-[620px] h-screen p-10 ml-20">
+            <div className="ml-10  space-y-2">
+              <img
+                src={Image2}
+                className="w-[100px] h-[100px] rounded-lg bg-inherit ml-52  "
+              />
+              <h1 className="text-center font-sans text-xl mt-4">
+                Welcome Back
+              </h1>
+              <p className="">{errorEmail}</p>
+              <Input 
+                name="email"
+                label="email"
+                onChange={handleChange}
+                payload={payload.email}
+                type="email"
+                placeholder={"Enter your email"}
+              />
+              <p className="flex ">{errorPassword}</p>
+              <Input
+                name="password"
+                label="password"
+                onChange={handleChange}
+                payload={payload.password}
+                type="password"
+                placeholder={"Enter your password"}
+              />
+              <button className="font-semibold underline underline-offset-2 text-blue-500" onClick={() => {
+                return navigate("/forgotPassword")
+            }}>
+            
+            </button>
+              <div className="ml-16 mt-10 ">
+                <Button
+                  type={"submit"}
+                 
+                  title={isLoading ? "PROCESS" : "LOGIN"}
+                />
+              </div>
+>>>>>>> 6b2f4860512c0a41507f0ab6ef6fdc3e343d2130
             </div>
+            <div className="w-full flex items-center justify-center p-9">
+          <p className="text-sm font-normal text-black">
+            Dont have'an Account?
+            <button className="font-semibold underline underline-offset-2 text-blue-500" onClick={() => {
+                return navigate("/register")
+            }}>
+              Sign up or free
+            </button>
+          </p>
+        </div>
           </div>
+<<<<<<< HEAD
+=======
+          
+        </form>
+        <div className="">
+          <img
+            src={Image}
+            className="w-[900px] h-screen rounded-lg bg-inherit"
+          />
+>>>>>>> 6b2f4860512c0a41507f0ab6ef6fdc3e343d2130
         </div>
       </div>
+     
     </div>
   );
 }
