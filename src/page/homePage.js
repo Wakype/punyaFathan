@@ -1,6 +1,6 @@
 import React from 'react'
 
-function homePage() {
+function Dashboard() {
   return (
     <div>
       Hello world
@@ -8,4 +8,4 @@ function homePage() {
   )
 }
 
-export default homePage
+export default Dashboard

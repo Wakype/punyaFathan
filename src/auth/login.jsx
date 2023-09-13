@@ -2,7 +2,7 @@ import React from "react";
 import Input from "../component/input";
 
 import Image from "../assets/image/background.png";
-import Image2 from "../assets/image/Logo MyKanten.png";
+import Image2 from "../assets/image/Logo.png";
 import Button from "../component/button";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -10,11 +10,10 @@ import { authLogin } from "../redux/actions/authAction";
 import Swal from "sweetalert2";
 
 export default function Login() {
-  let navigate = useNavigate();
-  const [errorName, setErrorName] = React.useState("");
+  const navigate = useNavigate();
   const [errorEmail, setErrorEmail] = React.useState("");
   const [errorPassword, setErrorPassword] = React.useState("");
-  const [errorMessage, setMessageError] = React.useState("");
+  // const [errorMessage, setMessageError] = React.useState('');
 
   let dispatch = useDispatch();
   const [payload, setPayload] = React.useState({
@@ -32,6 +31,7 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
+    console.log("tes");
     e.preventDefault();
     try {
       const response = await dispatch(authLogin(payload));
@@ -55,11 +55,12 @@ export default function Login() {
         });
         return navigate("/dashboard", { replace: true });
       } else {
-        setMessageError(response?.response?.data?.msg);
+        // setMessageError(response?.response?.data?.msg);
         setErrorEmail(response?.response?.data?.msg);
         setErrorPassword(response?.response?.data?.msg);
         // alert('Email kosong silahkan di isi');
       }
+
       if (payload.password === "") {
         setErrorPassword("Password wajib diisi");
       } else if (payload.password.length < 8) {
@@ -72,22 +73,20 @@ export default function Login() {
       console.log(err);
       Swal.fire("Gagal!", "Email tidak di temukan.", "error");
       alert("fail anda gagal login");
-    } finally {
     }
-    console.log("jalan cuy");
   };
 
   const [isLoading, setIsLoading] = React.useState(false);
   return (
     <div>
       <div className="w-screen h-full flex ">
-        <form className="" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="bg-white w-[620px] h-screen p-10 ml-20">
             <div className="ml-10  space-y-2">
-              <img
+              {/* <img
                 src={Image2}
                 className="w-[100px] h-[100px] rounded-lg bg-inherit ml-52  "
-              />
+              /> */}
               <h1 className="text-center font-sans text-xl mt-4">
                 Welcome Back
               </h1>
@@ -96,6 +95,7 @@ export default function Login() {
                 name="email"
                 label="email"
                 onChange={handleChange}
+                payload={payload.email}
                 type="email"
                 placeholder={"Enter your email"}
               />
@@ -104,15 +104,16 @@ export default function Login() {
                 name="password"
                 label="password"
                 onChange={handleChange}
+                payload={payload.password}
                 type="password"
                 placeholder={"Enter your password"}
               />
-              <a
-                className="text-black text-[12px] font-sans hover:font-bold ml-[350px] mt-4"
-                href="/forgotPassword"
-              >
-                Forgot Password
-              </a>
+              <button
+                className="font-semibold underline underline-offset-2 text-blue-500"
+                onClick={() => {
+                  return navigate("/forgotPassword");
+                }}
+              ></button>
               <div className="ml-16 mt-10 ">
                 <Button
                   type={"submit"}
@@ -120,10 +121,26 @@ export default function Login() {
                 />
               </div>
             </div>
+            <div className="w-full flex items-center justify-center p-9">
+              <p className="text-sm font-normal text-black">
+                Dont have'an Account?
+                <button
+                  className="font-semibold underline underline-offset-2 text-black"
+                  onClick={() => {
+                    return navigate("/register");
+                  }}
+                >
+                  Sign up or free
+                </button>
+              </p>
+            </div>
           </div>
         </form>
         <div className="">
-          <img src={Image} className="w-[900px] h-screen rounded-lg " />
+          <img
+            src={Image}
+            className="w-[900px] h-screen rounded-lg bg-inherit"
+          />
         </div>
       </div>
     </div>
