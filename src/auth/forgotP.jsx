@@ -58,7 +58,7 @@ export default function ForgotPassword() {
           icon: "success",
           title: response?.msg,
         });
-        return navigate("/login", { replace: true });
+        return navigate("/reset", { replace: true });
       } else {
         setMessageError(response?.response?.data?.msg);
 

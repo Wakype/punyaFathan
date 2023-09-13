@@ -11,6 +11,9 @@ export async function registerProses(payload) {
 export async function forgotPassword(payload) {
   return axios.post("/auth/lupa-password", payload);
 }
+export async function resetPassword(payload) {
+  return axios.post("/auth/reset-password/:id/:token", payload);
+}
 
 export async function Dashbord(payload) {
   return axios.post("/dashboard", payload);

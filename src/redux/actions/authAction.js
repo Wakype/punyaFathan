@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import {
 
   forgotPassword,
-    login, registerProses
+    login, registerProses, resetPassword
 } from '../../Api/auth';
 
 export function authLogin(payload) {
@@ -89,23 +89,23 @@ export function authForgot(payload) {
   };
 }
 
-// export function authReset(id,token,payload) {
-//   return async (dispatch) => {
-//     try {
-//       let response = await ResetPassword(id,token,payload);
-//       let data = response.data;
-//       console.log('data =>', data);
-//       dispatch({
-//         type: 'login',
-//         password : data?.user?.password,
-//         passwordConfirmation: data?.user?.passwordConfirmation,
-//         isAuth: true,
-//       });
-//       Cookies.set('myapps_token', data?.token);
-//       return data;
-//     } catch (err) {
-//       console.log(err);
-//       return err;
-//     }
-//   };
-// }
+export function authReset(id,token,payload) {
+  return async (dispatch) => {
+    try {
+      let response = await resetPassword(id,token,payload);
+      let data = response.data;
+      console.log('data =>', data);
+      dispatch({
+        type: 'login',
+        password : data?.user?.password,
+        passwordConfirmation: data?.user?.passwordConfirmation,
+        isAuth: true,
+      });
+      Cookies.set('myapps_token', data?.token);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+}
