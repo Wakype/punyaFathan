@@ -1,21 +1,20 @@
-import Cookies from 'js-cookie';
-import {
-    login,registerProses
-} from '../../Api/auth';
+import Cookies from "js-cookie";
+import { forgotPassword, loginProses } from "../../Api/auth";
+// import { ForgotPassword, login } from "../../Api/auth";
 
 export function authLogin(payload) {
   return async (dispatch) => {
     try {
-      let response = await login(payload);
-      let data = response.data;
-      console.log('data 1 =>', data);
+      let response = await loginProses(payload);
+      let data = response.data.data;
+      console.log("data 1 =>", data);
       dispatch({
-        type: 'login',
+        type: "login",
         email: data?.user?.email,
         password: data?.user?.password,
         isAuth: true,
       });
-      Cookies.set('myapps_token', data?.token);
+      Cookies.set("myapps_token", data?.token);
       return data;
     } catch (err) {
       console.log(err);
@@ -44,38 +43,20 @@ export function authLogin(payload) {
 //     }
 //   };
 // }
-export function authRegister(payload) {
-  return async (dispatch) => {
-    try {
-      let response = await registerProses(payload);
-      let data = response.data;
-      console.log('data =>', data);
-      dispatch({
-        type: 'register',
-        name: data?.user?.name,
-        email: data?.user?.email,
-        password: data?.user?.password,
-        role: data?.user?.role,
-        isAuth: true,
-      });
-      Cookies.set('myapps_token', data?.token);
-      return data;
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  };
-}
-
-// export function authForgot(payload) {
+// export function authRegister(payload) {
 //   return async (dispatch) => {
 //     try {
-//       let response = await forgotPassword(payload);
+//       let response = await registerProses(payload);
 //       let data = response.data;
 //       console.log('data =>', data);
 //       dispatch({
 //         type: 'login',
+//         name: data?.user?.name,
 //         email: data?.user?.email,
+//         password: data?.user?.password,
+//         passwordConfirmation: data?.user?.passwordConfirmation,
+//         status: data?.user?.status,
+//         jenisKelamin: data?.user?.jeniskelamin,
 //         isAuth: true,
 //       });
 //       Cookies.set('myapps_token', data?.token);
@@ -86,6 +67,26 @@ export function authRegister(payload) {
 //     }
 //   };
 // }
+
+export function authForgot(payload) {
+  return async (dispatch) => {
+    try {
+      let response = await forgotPassword(payload);
+      let data = response.data;
+      console.log("data =>", data);
+      dispatch({
+        type: "login",
+        email: data?.user?.email,
+        isAuth: true,
+      });
+      Cookies.set("myapps_token", data?.token);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+}
 
 // export function authReset(id,token,payload) {
 //   return async (dispatch) => {
