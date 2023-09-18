@@ -32,6 +32,9 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     console.log("tes");
+
+    console.log("tes");
+
     e.preventDefault();
     try {
       const response = await dispatch(authLogin(payload));
@@ -78,69 +81,74 @@ export default function Login() {
 
   const [isLoading, setIsLoading] = React.useState(false);
   return (
-    <div>
-      <div className="w-screen h-full flex ">
-        <form onSubmit={handleSubmit}>
-          <div className="bg-white w-[620px] h-screen p-10 ml-20">
-            <div className="ml-10  space-y-2">
-              {/* <img
-                src={Image2}
-                className="w-[100px] h-[100px] rounded-lg bg-inherit ml-52  "
-              /> */}
-              <h1 className="text-center font-sans text-xl mt-4">
-                Welcome Back
+    <div className="flex items-center min-h-screen p-6  bg-[#2B2D31]">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-[#313338] rounded-lg shadow-2xl ">
+        <div className="flex flex-col overflow-y-auto md:flex-row">
+          <div className="h-32 md:h-auto md:w-1/2">
+            <img
+              aria-hidden="true"
+              className="object-cover w-full h-full dark:hidden"
+              src={Image}
+              alt="Office"
+            />
+            <img
+              aria-hidden="true"
+              className="hidden object-cover w-full h-full dark:block"
+              src="../assets/img/login-office-dark.jpeg"
+              alt="Office"
+            />
+          </div>
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div className="w-full">
+              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200 font-sans">
+                Login
               </h1>
-              <p className="">{errorEmail}</p>
-              <Input
-                name="email"
-                label="email"
-                onChange={handleChange}
-                payload={payload.email}
-                type="email"
-                placeholder={"Enter your email"}
-              />
-              <p className="flex ">{errorPassword}</p>
-              <Input
-                name="password"
-                label="password"
-                onChange={handleChange}
-                payload={payload.password}
-                type="password"
-                placeholder={"Enter your password"}
-              />
-              <button
-                className="font-semibold underline underline-offset-2 text-blue-500"
-                onClick={() => {
-                  return navigate("/forgotPassword");
-                }}
-              ></button>
-              <div className="ml-16 mt-10 ">
-                <Button
-                  type={"submit"}
-                  title={isLoading ? "PROCESS" : "LOGIN"}
-                />
-              </div>
-            </div>
-            <div className="w-full flex items-center justify-center p-9">
-              <p className="text-sm font-normal text-black">
-                Dont have'an Account?
+              <form action="" onSubmit={handleSubmit} className="space-y-4">
+                <label className="block text-sm space-y-2">
+                  <span className="text-gray-700 dark:text-gray-400 ">
+                    Email
+                  </span>
+                  <Input
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Email"
+                    name="email"
+                    // label="email"
+                    onChange={handleChange}
+                    payload={payload.email}
+                    type="email"
+                    // placeholder={"Enter your password"}
+                  />
+                </label>
+                <label className="block mt-4 text-sm space-y-2">
+                  <span className="text-gray-700 dark:text-gray-400">
+                    Password
+                  </span>
+                  <Input
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="***************"
+                    name="password"
+                    // label="password"
+                    onChange={handleChange}
+                    payload={payload.password}
+                    type="password"
+                  />
+                </label>
+                <div className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                  <Button
+                    type={"submit"}
+                    title={isLoading ? "PROCESS" : "LOGIN"}
+                  />
+                </div>
                 <button
-                  className="font-semibold underline underline-offset-2 text-black"
-                  onClick={() => {
-                    return navigate("/register");
-                  }}
+                  className="font-semibold underline underline-offset-2 text-black ml-44"
+                  onClick={() => navigate("/forgotPassword")}
                 >
-                  Sign up or free
+                  forgot Password
                 </button>
-              </p>
+              </form>
+             
             </div>
           </div>
-        </form>
-        <div className="">
-          <img
-            src={Image}
-            className="w-[900px] h-screen rounded-lg bg-inherit"
-          />
         </div>
       </div>
     </div>

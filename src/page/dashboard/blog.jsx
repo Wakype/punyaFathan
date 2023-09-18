@@ -13,8 +13,8 @@ export default function Blog() {
   return (
     <div className="dashboard flex h-[630px]  w-screen bg-gray-200">
     
-      <div className="bg-blue-900 text-white w-64 space-y-6 py-7 px-2">
-        <h2 className="text-2xl font-extrabold mb-6">My Kantin</h2>
+      <div className="bg-[#1450A3] text-white w-64 space-y-6 py-7 px-2">
+        <h2 className="text-2xl font-bold font-sans text-center mb-6"> Kantin</h2>
         <nav>
             <Link to="/dashboard" className="block py-2.5 px-4 hover:bg-blue-600">Home</Link>
             <Link to="/dashboard/User" className="block py-2.5 px-4 hover:bg-blue-600">User</Link>
