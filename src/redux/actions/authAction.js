@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import {
 
   forgotPassword,
-    login, registerProses, resetPassword
+    login, registerProses, resetPassword, authMeProcess
 } from '../../Api/auth';
 
 export function authLogin(payload) {
@@ -46,6 +46,8 @@ export function authLogin(payload) {
 //     }
 //   };
 // }
+
+
 export function authRegister(payload) {
   return async (dispatch) => {
     try {

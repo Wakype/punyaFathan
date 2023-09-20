@@ -2,7 +2,7 @@ import React from "react";
 import Input from "../component/input";
 
 import Image from "../assets/image/background.png";
-import Image2 from "../assets/image/Logo.png";
+import Image2 from "../assets/image/Logo MyKanten.png";
 import Button from "../component/button";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
@@ -82,7 +82,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = React.useState(false);
   return (
     <div className="flex items-center min-h-screen p-6  bg-[#2B2D31]">
-      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-[#313338] rounded-lg shadow-2xl ">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-2xl ">
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img
@@ -100,7 +100,7 @@ export default function Login() {
           </div>
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div className="w-full">
-              <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200 font-sans">
+              <h1 className="mb-4 text-xl font-semibold text-black-- font-sans">
                 Login
               </h1>
               <form action="" onSubmit={handleSubmit} className="space-y-4">
@@ -146,7 +146,6 @@ export default function Login() {
                   forgot Password
                 </button>
               </form>
-             
             </div>
           </div>
         </div>
