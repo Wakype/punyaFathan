@@ -7,28 +7,10 @@ import {
   AiFillGolden,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-// import { HiHome } from "react-icons/hi";
-// import { CgProfile } from "react-icons/cg";
-// import { IoIosNotificationsOutline } from "react-icons/io";
-// const products = [
-//   { id: 1, name: "Nasi Goreng", price: "Rp. 20.000", image: "background.png" },
-//   { id: 2, name: "Mie Ayam", price: "Rp. 15.000", image: "background.png" },
-//   { id: 1, name: "Nasi padang", price: "Rp. 20.000", image: "background.png" },
-//   {
-//     id: 2,
-//     name: "Tacret enak bangat",
-//     price: "Rp. 15.000",
-//     image: "background.png",
-//   },
-//   { id: 1, name: "Nasi uduk ", price: "Rp. 20.000", image: "background.png" },
-//   {
-//     id: 2,
-//     name: "telor mie (DARMIE)",
-//     price: "Rp. 15.000",
-//     image: "background.png",
-//   },
-// ];
+import { BiLogOutCircle } from "react-icons/bi";
+
 export default function Dashboard() {
+  const [listBarang, setListBarang] = React.useState([]);
   return (
     <html className="{ 'theme-dark': dark }" x-data="data()" lang="en">
       <head>
@@ -57,19 +39,18 @@ export default function Dashboard() {
       </head>
       <body>
         <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-          <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
+          <aside className="z-20 hidden w-64 overflow-y-auto bg-gray-50 dark:bg-gray-900 md:block flex-shrink-0">
             <div className="py-4 text-gray-500 dark:text-gray-400">
               <a
-                className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
+                className="ml-6 text-lg font-bold text-white items-center text-[30px]"
                 href="#"
               >
                 Mykanten
               </a>
               <ul className="mt-6">
                 <li className="relative px-6 py-3">
-                  
                   <a
-                    className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                    className="inline-flex items-center w-full text-sm font-semibold text-black transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-500"
                     href="/dashboard"
                   >
                     <svg
@@ -149,6 +130,15 @@ export default function Dashboard() {
                       <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                     </svg>
                     <span className="ml-4">Blog</span>
+                  </a>
+                </li>
+                <li className="relative px-6 py-3 mt-72">
+                  <a
+                    className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                    href="/dashboard/Blog"
+                  >
+                    <BiLogOutCircle className="w-5 h-5 " />
+                    <span className="ml-4">Log Out</span>
                   </a>
                 </li>
               </ul>
@@ -291,81 +281,8 @@ export default function Dashboard() {
                       aria-label="Account"
                       aria-haspopup="true"
                     >
-                      <img
-                        className="object-cover w-8 h-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-                        alt=""
-                        aria-hidden="true"
-                      />
+                      <div className="object-cover w-8 h-8 rounded-full bg-gray-200"></div>
                     </button>
-                    <template x-if="isProfileMenuOpen">
-                      <ul
-                        className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-                        aria-label="submenu"
-                      >
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            <svg
-                              className="w-4 h-4 mr-3"
-                              aria-hidden="true"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span>Profile</span>
-                          </a>
-                        </li>
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            <svg
-                              className="w-4 h-4 mr-3"
-                              aria-hidden="true"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            <span>Settings</span>
-                          </a>
-                        </li>
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            <svg
-                              className="w-4 h-4 mr-3"
-                              aria-hidden="true"
-                              fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
-                            </svg>
-                            <span>Log out</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </template>
                   </li>
                 </ul>
               </div>
@@ -463,18 +380,47 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className="flex space-x-10 mb-8 grid-cols-3">
-                  <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-[#] rounded-lg shadow-lg">
-                    <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
-                  </div>
-                  <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-[#] rounded-lg shadow-lg">
-                    <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
-                  </div>
-                  <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-[#] rounded-lg shadow-lg">
-                    <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
-                  </div>
-                  <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-[#] rounded-lg shadow-lg">
-                    <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
+                <div className="flex space-x-10 mb-8 grid-cols-3 ">
+                  {/* {listBarang?.map((index) => {
+                    <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-gray-400 rounded-lg shadow-2xl">
+                      <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
+                    </div>;
+                  })} */}
+                  <div className="grid grid-cols-5 gap-4 overflow-y-visible">
+                    {listBarang.length === 0 ? (
+                      <div className="">
+                        <h1 className="font-bold text-black text-center">
+                          Barang Tidak di temukan
+                        </h1>
+                      </div>
+                    ) : (
+                      listBarang?.map((item, index) => {
+                        return (
+                          <button
+                            onClick={() => {
+                              // return navigate(`/produk/detailProduk/${item.uuid}`);
+                            }}
+                          >
+                            <div className="border-2  bg-gray-200 marker: shadow-black border-black w-[220px] h-[250px] mt-2 rounded-lg overflow-y-hidden overflow-x-hidden ">
+                              <div className="border-b border-black h-[100px]"></div>
+                              <div className="mt-2">
+                                <p className="text-sm  w-[170px] mt-2 text-start ml-2 font-medium">
+                                 
+                                </p>
+                                <p className="text-sm font-bold ml-2 text-start"></p>
+                              </div>
+                              <div className="flex space-x-10 mt-2">
+                                {/* <p className="text-sm font-semibold ml-2 ">
+                              Kategori : {item.kategori}
+                            </p> */}
+                                <p className="text-sm font-semibold ml-2 "></p>
+                                <div className="flex"></div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })
+                    )}
                   </div>
                 </div>
               </div>

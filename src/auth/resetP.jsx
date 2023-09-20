@@ -40,7 +40,7 @@ export default function ResetPassword() {
     e.preventDefault();
     try {
       setIsLoading(false);
-      const response = await resetPassword(payload)
+      const response = await resetPassword(payload);
       console.log("response", response);
       if (response?.status === "Success") {
         const Toast = Swal.mixin({
@@ -81,9 +81,8 @@ export default function ResetPassword() {
   };
 
   return (
-    
-    <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+    <div className="flex items-center min-h-screen p-6 bg-[#2B2D31]">
+      <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden  rounded-lg shadow-xl bg-[#313338]">
         <div className="flex flex-col overflow-y-auto md:flex-row">
           <div className="h-32 md:h-auto md:w-1/2">
             <img
@@ -99,36 +98,38 @@ export default function ResetPassword() {
               alt="Office"
             />
           </div>
-          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
-            <div className="w-full">
+          <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2 space-y-4">
+            <div className="w-full ">
               <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
-              Reset Password
+                Reset Password
               </h1>
-              <form action="" onSubmit={handleSubmit}>
-                <label className="block text-sm">
+              <form action="" onSubmit={handleSubmit} className="space-y-4">
+                <label className="block text-sm space-y-2">
                   <span className="text-gray-700 dark:text-gray-400">
                     Password
                   </span>
-                  <input
+                  <Input
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Password"
                     name="password"
-                    label="password"
+                    // label="email"
                     onChange={handleChange}
                     payload={payload.password}
                     type="password"
                     // placeholder={"Enter your password"}
                   />
                 </label>
-        
-                <div className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
-                  <Button
-                    type={"submit"}
-                    title={isLoading ? "RESET" : "PROCCESS"}
-                  />
-                </div>
+                <Button
+                  type={"submit"}
+                  title={isLoading ? "SEND" : "PROCCESS"}
+                />
               </form>
-              <hr className="my-8" />
+              <button
+                className="font-semibold   text-black mt-2"
+                onClick={() => navigate("/login")}
+              >
+                Back
+              </button>
             </div>
           </div>
         </div>

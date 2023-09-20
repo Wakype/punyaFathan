@@ -57,19 +57,15 @@ export default function Dashboard() {
       </head>
       <body>
         <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-          <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
+        <aside className="z-20 hidden w-64 overflow-y-auto bg-gray-50 dark:bg-gray-900 md:block flex-shrink-0">
             <div className="py-4 text-gray-500 dark:text-gray-400">
-              <a
-                className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-                href="#"
-              >
+              <a className="ml-6 text-lg font-bold text-white items-center text-[30px]" href="#">
                 Mykanten
               </a>
               <ul className="mt-6">
                 <li className="relative px-6 py-3">
-                 
                   <a
-                    className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                    className="inline-flex items-center w-full text-sm font-semibold text-black transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-500"
                     href="/dashboard"
                   >
                     <svg

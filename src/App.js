@@ -16,11 +16,12 @@ import ResetPassword from "./auth/resetP";
 
 function App() {
   return (
-    
-
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/reset" element={<ResetPassword />} />
+      <Route
+        path="/auth/reset-password/:id/:token"
+        element={<ResetPassword />}
+      />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/dashboard" element={<Dashboard />} />
