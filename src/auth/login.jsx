@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "../component/input";
 
-import Image from "../assets/image/background.png";
+import Image from "../assets/image/gambar.png";
 import Image2 from "../assets/image/Logo MyKanten.png";
 import Button from "../component/button";
 import { useNavigate } from "react-router";
@@ -125,7 +125,7 @@ export default function Login() {
                   </span>
                   <Input
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="***************"
+                    placeholder="password"
                     name="password"
                     // label="password"
                     onChange={handleChange}
