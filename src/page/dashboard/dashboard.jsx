@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import {
@@ -8,9 +8,21 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
+import { getAllProduk } from "../../Api/kantin";
 
 export default function Dashboard() {
   const [listBarang, setListBarang] = React.useState([]);
+
+  const fetchBarang = async () => {
+    try {
+      const response = await getAllProduk();
+      console.log("res", response);
+      setListBarang(response.data.data);
+      console.log(listBarang);
+    } catch (error) {
+      console.error("Terjadi kesalahan saat mengambil data barang:", error);
+    }
+  };
   const handleLogout = () => {
     // Menghapus token dari localStorage
     localStorage.removeItem("token");
@@ -19,7 +31,9 @@ export default function Dashboard() {
     alert("Anda telah logout");
   };
   const [isProfileMenuOpen, setProfileMenuOpen] = React.useState(false);
-
+  useEffect(() => {
+    fetchBarang();
+  }, []);
   return (
     <html className="{ 'theme-dark': dark }" x-data="data()" lang="en">
       <head>
@@ -82,7 +96,7 @@ export default function Dashboard() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/Produk"
+                    href="/dashboard/EnterItem"
                   >
                     <svg
                       className="w-5 h-5"
@@ -97,13 +111,13 @@ export default function Dashboard() {
                       <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                     {/* <AiFillGolden className="w-[25px] h-[25px] text-black " /> */}
-                    <span className="ml-4">Product</span>
+                    <span className="ml-4">Entery Item</span>
                   </a>
                 </li>
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/User"
+                    href="/dashboard/OutItem"
                   >
                     <svg
                       className="w-5 h-5"
@@ -117,13 +131,13 @@ export default function Dashboard() {
                     >
                       <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
-                    <span className="ml-4">User</span>
+                    <span className="ml-4">Out Item</span>
                   </a>
                 </li>
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/Blog"
+                    href="/dashboard/Report"
                   >
                     <svg
                       className="w-5 h-5"
@@ -138,10 +152,9 @@ export default function Dashboard() {
                       <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
                       <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                     </svg>
-                    <span className="ml-4">Blog</span>
+                    <span className="ml-4">Report</span>
                   </a>
                 </li>
-                
               </ul>
             </div>
           </aside>
@@ -251,7 +264,6 @@ export default function Dashboard() {
                             className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                             href="#"
                             onClick={handleLogout}
-
                           >
                             {/* SVG for Logout */}
                             {/* ... */}
@@ -284,9 +296,7 @@ export default function Dashboard() {
                           <a
                             className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
                             href="#"
-                          >
-                            
-                          </a>
+                          ></a>
                         </li>
                         <li className="flex">
                           <a
@@ -304,9 +314,7 @@ export default function Dashboard() {
                       className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
                       aria-label="Account"
                       aria-haspopup="true"
-                    >
-                     
-                    </button>
+                    ></button>
                   </li>
                 </ul>
               </div>
@@ -404,13 +412,13 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className="flex space-x-10 mb-8 grid-cols-3 ">
-                  {/* {listBarang?.map((index) => {
+                <div className="">
+                  {listBarang?.map((index) => {
                     <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-gray-400 rounded-lg shadow-2xl">
-                      <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div>
+                      {/* <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div> */}
                     </div>;
-                  })} */}
-                  <div className="grid grid-cols-5 gap-4 overflow-y-visible">
+                  })}
+                  <div className="grid grid-cols-4 overflow-y-visible">
                     {listBarang.length === 0 ? (
                       <div className="text-center">
                         <h1 className="font-bold text-black ">
@@ -422,20 +430,28 @@ export default function Dashboard() {
                         return (
                           <button
                             onClick={() => {
-                              // return navigate(`/produk/detailProduk/${item.uuid}`);
+                              // return navigate(/produk/detailProduk/${item.uuid});
                             }}
                           >
-                            <div className="border-2  bg-gray-200 marker: shadow-black border-black w-[220px] h-[250px] mt-2 rounded-lg overflow-y-hidden overflow-x-hidden ">
-                              <div className="border-b border-black h-[100px]"></div>
-                              <div className="mt-2">
-                                <p className="text-sm  w-[170px] mt-2 text-start ml-2 font-medium"></p>
-                                <p className="text-sm font-bold ml-2 text-start"></p>
+                            <div className="border-2  bg-white border-black w-[220px] h-[250px] mt-2 rounded-lg overflow-y-hidden overflow-x-hidden ">
+                              <div className="h-[100px] p-2">
+                                {" "}
+                                <img
+                                  className="w-40 h-[100px] object-cover ml-5"
+                                  src={item?.gambarBarang}
+                                  alt=""
+                                  srcset=""
+                                />
                               </div>
-                              <div className="flex space-x-10 mt-2">
-                                {/* <p className="text-sm font-semibold ml-2 ">
-                              Kategori : {item.kategori}
-                            </p> */}
-                                <p className="text-sm font-semibold ml-2 "></p>
+                              <div className="mt-2"></div>
+
+                              <div className="space-x-10 mt-2 ">
+                                <p className="text-sm font-semibold ml-2 w-[150px] bg-white">
+                                  {item.namaBarang}
+                                </p>
+                                <p className="text-sm font-semibold ml-2 ">
+                                  {item.stok}
+                                </p>
                                 <div className="flex"></div>
                               </div>
                             </div>

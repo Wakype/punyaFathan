@@ -8,11 +8,12 @@ import "./App.css";
 import Login from "./auth/login.jsx";
 import Register from "./auth/register";
 import Dashboard from "./page/dashboard/dashboard";
-import Produk from "./page/dashboard/produk";
-import Blog from "./page/dashboard/blog";
-import User from "./page/dashboard/user";
+
 import ForgotPassword from "./auth/forgotP";
 import ResetPassword from "./auth/resetP";
+import EnterItem from "./page/dashboard/EnterItem";
+import Report from "./page/dashboard/report";
+import OutItem from "./page/dashboard/outItem";
 
 function App() {
   return (
@@ -25,9 +26,9 @@ function App() {
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/dashboard/Produk" element={<Produk />} />
-      <Route path="/dashboard/Blog" element={<Blog />} />
-      <Route path="/dashboard/User" element={<User />} />
+      <Route path="/dashboard/EnterItem" element={<EnterItem />} />
+      <Route path="/dashboard/Report" element={<Report />} />
+      <Route path="/dashboard/OutItem" element={<OutItem />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<Navigate to="/login" replace={true} />} />
     </Routes>
