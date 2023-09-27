@@ -6,8 +6,10 @@ import {
   AiOutlineUser,
   AiFillGolden,
   AiOutlineShoppingCart,
+  AiFillDatabase,
 } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
+import { FaUserCircle } from "react-icons/fa";
 import { getAllProduk } from "../../Api/kantin";
 
 export default function Dashboard() {
@@ -98,20 +100,8 @@ export default function Dashboard() {
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     href="/dashboard/EnterItem"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-                    </svg>
-                    {/* <AiFillGolden className="w-[25px] h-[25px] text-black " /> */}
-                    <span className="ml-4">Entery Item</span>
+                    <FaUserCircle className="w-5 h-5" />
+                    <span className="ml-4">User</span>
                   </a>
                 </li>
                 <li className="relative px-6 py-3">
@@ -119,41 +109,86 @@ export default function Dashboard() {
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                     href="/dashboard/OutItem"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                    </svg>
-                    <span className="ml-4">Out Item</span>
+                    <AiFillGolden className="w-[25px] h-[25px] text-white " />
+
+                    <span className="ml-4">Produk</span>
                   </a>
                 </li>
-                <li className="relative px-6 py-3">
-                  <a
-                    className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/Report"
+
+                <li className="relative">
+                  <button
+                    onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
                   >
-                    <svg
-                      className="w-5 h-5"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                    <div cls>
+                      <div className="w-10 h-10 bg-gray-400 rounded-full mt-56 ml-5"></div>
+                    </div>
+                  </button>
+
+                  {isProfileMenuOpen && (
+                    <ul
+                      className="absolute right-0 w-56 p-2 mt-1 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700 mr-2"
+                      aria-label="submenu"
                     >
-                      <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-                      <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-                    </svg>
-                    <span className="ml-4">Report</span>
-                  </a>
+                      {/* Menu items... */}
+                      <li className="flex">
+                        <a
+                          className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                          href="#"
+                        >
+                          {/* SVG for Profile */}
+                          {/* ... */}
+                          <span>Profile</span>
+                        </a>
+                      </li>
+                      {/* ... other menu items */}
+                      <li className="flex ">
+                        <a
+                          className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                          href="#"
+                          onClick={handleLogout}
+                        >
+                          <Link
+                            to="/login"
+                            className="text-black flex text-white"
+                            // onClick={handleLogout}
+                          >
+                            <BiLogOutCircle className="w-5 h-5 mr-2" />
+                            Logout
+                          </Link>
+                        </a>
+                      </li>
+                      {/* <div className="w-10 h-10 ">fathan</div> */}
+                    </ul>
+                  )}
+                  <template x-if="isNotificationsMenuOpen">
+                    <ul className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
+                      <li className="flex">
+                        <a
+                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                          href="#"
+                        >
+                          <span>Messages</span>
+                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
+                            13
+                          </span>
+                        </a>
+                      </li>
+                      <li className="flex">
+                        <a
+                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                          href="#"
+                        ></a>
+                      </li>
+                      <li className="flex">
+                        <a
+                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                          href="#"
+                        >
+                          <span>Alerts</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </template>
                 </li>
               </ul>
             </div>
@@ -182,7 +217,7 @@ export default function Dashboard() {
                 <div className="flex justify-center flex-1 lg:mr-32">
                   <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
                     <div className="absolute inset-y-0 flex items-center pl-2">
-                      <svg
+                      {/* <svg
                         className="w-4 h-4"
                         aria-hidden="true"
                         fill="currentColor"
@@ -193,14 +228,14 @@ export default function Dashboard() {
                           d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                           clip-rule="evenodd"
                         ></path>
-                      </svg>
+                      </svg> */}
                     </div>
-                    <input
+                    {/* <input
                       className="w-full h-10 pl-8 pr-2 text-sm text-black placeholder-white bg-white border-0 rounded-md dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                       type="text"
                       placeholder="Search for projects"
                       aria-label="Search"
-                    />
+                    /> */}
                   </div>
                 </div>
                 <ul className="flex items-center flex-shrink-0 space-x-6">
@@ -235,80 +270,7 @@ export default function Dashboard() {
                       </template>
                     </button>
                   </li>
-                  <li className="relative">
-                    <button
-                      onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
-                    >
-                      <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
-                    </button>
 
-                    {isProfileMenuOpen && (
-                      <ul
-                        className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-                        aria-label="submenu"
-                      >
-                        {/* Menu items... */}
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            {/* SVG for Profile */}
-                            {/* ... */}
-                            <span>Profile</span>
-                          </a>
-                        </li>
-                        {/* ... other menu items */}
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                            onClick={handleLogout}
-                          >
-                            {/* SVG for Logout */}
-                            {/* ... */}
-                            <Link
-                              to="/login"
-                              className="text-black flex text-white"
-                              // onClick={handleLogout}
-                            >
-                              <BiLogOutCircle className="w-5 h-5 mr-2" />
-                              Logout
-                            </Link>
-                          </a>
-                        </li>
-                      </ul>
-                    )}
-                    <template x-if="isNotificationsMenuOpen">
-                      <ul className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            <span>Messages</span>
-                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
-                              13
-                            </span>
-                          </a>
-                        </li>
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          ></a>
-                        </li>
-                        <li className="flex">
-                          <a
-                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
-                          >
-                            <span>Alerts</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </template>
-                  </li>
                   <li className="relative">
                     <button
                       className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
@@ -327,14 +289,8 @@ export default function Dashboard() {
 
                 <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
                   <div className="flex items-center p-4 rounded-lg shadow-xs bg-[#1450A3]">
-                    <div className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                      </svg>
+                    <div className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-red-500">
+                      <AiFillDatabase />
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -361,7 +317,7 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                        Barang Masuk
+                        Laba
                       </p>
                       <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                         00
@@ -380,7 +336,7 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                        Barang Keluar
+                        Rugi
                       </p>
                       <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                         00
@@ -388,77 +344,24 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div className="flex items-center p-4 bg-[#1450A3] shadow-md rounded-lg shadow-xs ">
-                    <div className="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
+                    <div className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
-                        <path
-                          fill-rule="evenodd"
-                          d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                          clip-rule="evenodd"
-                        ></path>
+                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                       </svg>
                     </div>
+
                     <div>
                       <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                        Pending contacts
+                        User
                       </p>
                       <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                         00
                       </p>
                     </div>
-                  </div>
-                </div>
-
-                <div className="">
-                  {listBarang?.map((index) => {
-                    <div className="w-[200px] shadow-2xl  h-[250px] p-4 bg-gray-400 rounded-lg shadow-2xl">
-                      {/* <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"></div> */}
-                    </div>;
-                  })}
-                  <div className="grid grid-cols-4 overflow-y-visible">
-                    {listBarang.length === 0 ? (
-                      <div className="text-center">
-                        <h1 className="font-bold text-black ">
-                          Barang Tidak di temukan
-                        </h1>
-                      </div>
-                    ) : (
-                      listBarang?.map((item, index) => {
-                        return (
-                          <button
-                            onClick={() => {
-                              // return navigate(/produk/detailProduk/${item.uuid});
-                            }}
-                          >
-                            <div className="border-2  bg-white border-black w-[220px] h-[250px] mt-2 rounded-lg overflow-y-hidden overflow-x-hidden ">
-                              <div className="h-[100px] p-2">
-                                {" "}
-                                <img
-                                  className="w-40 h-[100px] object-cover ml-5"
-                                  src={item?.gambarBarang}
-                                  alt=""
-                                  srcset=""
-                                />
-                              </div>
-                              <div className="mt-2"></div>
-
-                              <div className="space-x-10 mt-2 ">
-                                <p className="text-sm font-semibold ml-2 w-[150px] bg-white">
-                                  {item.namaBarang}
-                                </p>
-                                <p className="text-sm font-semibold ml-2 ">
-                                  {item.stok}
-                                </p>
-                                <div className="flex"></div>
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })
-                    )}
                   </div>
                 </div>
               </div>

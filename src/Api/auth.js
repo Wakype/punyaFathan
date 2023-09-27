@@ -5,10 +5,12 @@ import axios, { syncToken } from "./url";
 
 
 export async function login(payload) {
+  console.log("Berhasil mengambil data =>")
   return axios.post("/auth/login", payload);
 }
 
 export async function registerProses(payload) {
+  console.log("Berhasil mengambil data =>")
   return axios.post("/auth/register", payload);
 }
 export async function forgotPassword(payload) {

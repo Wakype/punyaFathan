@@ -6,12 +6,11 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Login from "./auth/login.jsx";
-import Register from "./auth/register";
 import Dashboard from "./page/dashboard/dashboard";
 
 import ForgotPassword from "./auth/forgotP";
 import ResetPassword from "./auth/resetP";
-import EnterItem from "./page/dashboard/EnterItem";
+import EnterItem from "./page/dashboard/user";
 import Report from "./page/dashboard/report";
 import OutItem from "./page/dashboard/outItem";
 
