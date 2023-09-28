@@ -7,6 +7,7 @@ export async function getUser(){
 }
 
 export async function getDetailUser(id){
+    console.log("id",id)
     return axios.get(`user/detail/${id}`)
 }
 
@@ -14,7 +15,7 @@ export async function createUser(payload){
     console.log('====================================');
     console.log("berhasil create =>",payload);
     console.log('====================================');
-    return axios.post('auth/register',payload)
+    return axios.post('user/create',payload)
 }
 
 export async function updateUser(id){

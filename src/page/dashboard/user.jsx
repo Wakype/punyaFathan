@@ -60,20 +60,19 @@ export default function EnterItem() {
   const [isProfileMenuOpen, setProfileMenuOpen] = React.useState(false);
   const [isCreatePop, setCreatePop] = React.useState(false);
   const [roleOption, setRoleOption] = useState([]);
-  
-  //Create User
+
+  // ----------------------------Create User----------------------------
 
   const formik = useFormik({
     initialValues: {
-      username: "",
+      nama: "",
       email: "",
       role: "",
     },
     validationSchema: Yup.object().shape({
-      username: Yup.string().required("Username Siswa harus diisi"),
+      nama: Yup.string().required("nama Siswa harus diisi"),
       email: Yup.string().email().required("Email harus diisi"),
-      // role: Yup.string().role().required("role harus diisi"),
-
+      role: Yup.string().required("role harus diisi"),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
@@ -91,8 +90,8 @@ export default function EnterItem() {
             toast.addEventListener("mouseleave", Swal.resumeTimer);
           },
         });
-
-        Toast.fire({
+        setCreatePop(false)
+        Swal.fire({
           icon: "success",
           title: "Berhasil Menambah data",
         });
@@ -107,6 +106,8 @@ export default function EnterItem() {
     },
   });
 
+  ///--------------------------------------------------------
+
   let {
     values,
     errors,
@@ -118,17 +119,17 @@ export default function EnterItem() {
     setFieldTouched,
     setFieldValue,
   } = formik;
-
-  // Update User
+  //--------------------------------------------------------
+  //---------------------------- Update User ----------------------------
 
   const formikEdit = useFormik({
     initialValues: {
-      username: "",
+      nama: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object().shape({
-      username: Yup.string().required("Username Siswa harus diisi"),
+      nama: Yup.string().required("nama Siswa harus diisi"),
       email: Yup.string().email().required("Email harus diisi"),
       password: Yup.string().required(" harus diisi"),
     }),
@@ -164,15 +165,34 @@ export default function EnterItem() {
     },
   });
 
-  // Log Out
+  //--------------------------------------------------------
+  // ---------------------------- Log Out ----------------------------
   const handleLogout = () => {
     // Menghapus token dari localStorage
     localStorage.removeItem("token");
+    try {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+
+      Toast.fire({
+        icon: "success",
+      });
+      return navigate("/login", { replace: true });
+    } catch (error) {}
     // Redirect atau melakukan hal lain sesuai kebutuhan
     alert("Anda telah logout");
   };
-
-  // List User
+  // --------------------------------------------------------
+  //-------------------------------- List User --------------------------------------------------------
 
   const [data, setData] = useState([]);
 
@@ -183,13 +203,13 @@ export default function EnterItem() {
     console.log("====================================");
     return setData(response.data.data);
   };
-
+  //--------------------------------------------------------
   const getRoleHandle = useCallback(async () => {
     const res = await getUser();
     setRoleOption(res.data.data);
   }, []);
 
-  /// Delete User
+  /// --------------------------------------------------------Delete User --------------------------------------------------------
   const deleteUserHandle = (id) => {
     console.log("button delete berjalan", id);
     Swal.fire({
@@ -208,20 +228,19 @@ export default function EnterItem() {
           Swal.fire("Deleted!", "Your file has been deleted.", "success");
           fetchUser();
         } catch (err) {
-          console.log("err =>" , err)
-          Swal.fire("Gagal!",);
+          console.log("err =>", err);
+          Swal.fire("Gagal!");
         }
       }
     });
     console.log("berhasil di delete", id);
   };
-
-  
-
+  //--------------------------------------------------------
+  // ---------------------------Use Effect---------------------------
   useEffect(() => {
     fetchUser();
   }, []);
-
+  // --------------------------------------------------------
   return (
     <html className="{ 'theme-dark': dark }" x-data="data()" lang="en">
       <head>
@@ -630,15 +649,15 @@ export default function EnterItem() {
                   </h2>
                   <div className="">
                     <button
-                      className="mr-10 bg-blue-500 w-16 h-10 rounded-md text-white font-semibold"
+                      className="mr-10 bg-green-500 w-36 h-10 rounded-md text-white font-semibold"
                       onClick={() => setCreatePop(true)}
                     >
-                      Create
+                      Create User
                     </button>
                     {isCreatePop ? (
                       <>
                         <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                          <form onSubmit={formikEdit.handleSubmit}>
+                          <form onSubmit={formik.handleSubmit}>
                             <div className="relative w-auto my-6 mx-auto max-w-3xl">
                               {/*content*/}
                               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
@@ -658,12 +677,12 @@ export default function EnterItem() {
                                 </div>
                                 {/* body */}
                                 <div className="p-10 w-[400px] h-full">
-                                  <h1 className="pt-3">Username</h1>
+                                  <h1 className="pt-3">nama</h1>
                                   <Input
-                                    className="w-[100%] h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
-                                    placeholder="Username"
-                                    name={"username"}
-                                    value={formik.values.username}
+                                    className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white "
+                                    placeholder="nama"
+                                    name={"nama"}
+                                    value={formik.values.nama}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     iserror={
@@ -673,7 +692,7 @@ export default function EnterItem() {
                                   />
                                   <h1 className="pt-3">Email</h1>
                                   <Input
-                                    className="w-[100%] mt-2 h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
+                                    className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
                                     placeholder="Email"
                                     name={"email"}
                                     value={formik.values.email}
@@ -688,19 +707,23 @@ export default function EnterItem() {
                                   <h1 className="pt-3">Role</h1>
                                   <InputGroup>
                                     <Select
+                                      className="block w-full h-8 mt-1 text-sm border border-black rounded-md focus:outline-none focus:shadow-outline-purple text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                      name="role"
                                       id="role"
-                                      type={"text"}
-                                      value={values.role}
                                       onChange={handleChange}
-                                      placeholder="Masukkan Role"
+                                      onBlur={handleBlur}
+                                      value={values.role}
                                     >
-                                      {roleOption.map((item, index) => {
-                                        return (
-                                          <option key={index} value={item.id}>
-                                            {item.role}
-                                          </option>
-                                        );
-                                      })}
+                                      <option
+                                        value={""}
+                                        className="text-center"
+                                      >
+                                        --Please choose Role--
+                                      </option>
+                                      <option value={"petugas"}>Petugas</option>
+                                      <option value={"admin"}>
+                                        Administrator
+                                      </option>
                                     </Select>
                                   </InputGroup>
                                 </div>
@@ -717,7 +740,7 @@ export default function EnterItem() {
                                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                     type="submit"
                                   >
-                                    {isFetch ? "Sedang Membuat" : "Create"}
+                                    {isSubmitting ? "Sedang Membuat" : "Create"}
                                   </button>
                                 </div>
                               </div>
@@ -732,7 +755,7 @@ export default function EnterItem() {
                 <TableContainer>
                   <Table
                     size="md"
-                    className="w-[95%] h-[75%] space-x-10 border border-collapse border-black"
+                    className="w-[95%] h-[75%] space-x-10 border border-collapse border-black rounded-lg"
                   >
                     <Thead>
                       <Tr className="space-x-5 bg-black text-white">
@@ -759,25 +782,25 @@ export default function EnterItem() {
                                 key={index}
                                 className="border-b dark:border-neutral-500"
                               >
-                                <td className="whitespace-nowrap h-10 px-6 py-4 font-medium h-5">
+                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 font-medium h-5">
                                   {index + 1}.
                                 </td>
-                                <td className="whitespace-nowrap h-10 px-6 py-4 h-2  ">
+                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 h-2  ">
                                   {data?.nama}
                                 </td>
-                                <td className="whitespace-nowrap h-10 px-6 py-4 h-2  ">
+                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 h-2  ">
                                   {data?.email}
                                 </td>
-                                <td className="whitespace-nowrap h-10 px-6 py-4 h-2  ">
+                                <td className="whitespace-nowrap h-2 border-l-2 border-r-2 border-black px-2 py-8 h-2  ">
                                   {data?.role}
                                 </td>
 
-                                <td className="flex items-center whitespace-nowrap px-6 py-[50%]">
+                                <td className="flex items-center whitespace-nowrap px-2 py-[15%]">
                                   <IconButton
-                                    className="mr-5 w-8 h-8 bg-blue-500 pl-2  text-lg text-white rounded"
+                                    className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded"
                                     icon={<MdEditDocument />}
                                     onClick={() => {
-                                      getDetailUser(data.id);
+                                      setIsShowModalEdit(true);
                                     }}
                                   />
                                   {isShowModalEdit ? (
@@ -807,14 +830,12 @@ export default function EnterItem() {
                                               </div>
                                               {/* body */}
                                               <div className="p-10 w-[400px] h-full">
-                                                <h1 className="pt-3">
-                                                  Username
-                                                </h1>
+                                                <h1 className="pt-3">nama</h1>
                                                 <Input
                                                   className="w-[100%] h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
-                                                  placeholder="Username"
-                                                  name={"username"}
-                                                  value={formik.values.username}
+                                                  placeholder="nama"
+                                                  name={"nama"}
+                                                  value={formik.values.nama}
                                                   onChange={formik.handleChange}
                                                   onBlur={formik.handleBlur}
                                                   iserror={
@@ -839,25 +860,35 @@ export default function EnterItem() {
                                                     formik.errors.email
                                                   }
                                                 />
-                                                <h1 className="pt-3">
-                                                  Password
-                                                </h1>
-                                                <Input
-                                                  className="w-[100%] mt-2 h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
-                                                  placeholder="Password"
-                                                  // type="number"
-                                                  name={"password"}
-                                                  value={formik.values.password}
+                                                <h1 className="pt-3">Role</h1>
+                                                <Select
+                                                  name="role"
+                                                  id="role"
                                                   onChange={formik.handleChange}
-                                                  onBlur={formik.handleBlur}
-                                                  iserror={
-                                                    formik.touched.password &&
-                                                    formik.errors.password
-                                                  }
-                                                  texterror={
-                                                    formik.errors.password
-                                                  }
-                                                />
+                                                  value={formik.values.role}
+                                                >
+                                                  <option
+                                                    value={formik.values.role}
+                                                    className="text-center"
+                                                  >
+                                                    --Please choose Role--
+                                                  </option>
+                                                  <option
+                                                    value={
+                                                      formik.values.petugas
+                                                    }
+                                                  >
+                                                    Petugas
+                                                  </option>
+                                                  <option
+                                                    value={
+                                                      formik.values
+                                                        .administrator
+                                                    }
+                                                  >
+                                                    Administrator
+                                                  </option>
+                                                </Select>
                                               </div>
                                               {/*footer*/}
                                               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -902,6 +933,7 @@ export default function EnterItem() {
                                         if (result.isConfirmed) {
                                           try {
                                             e.preventDefault();
+                                            console.log(data);
                                             const response = await deleteUser(
                                               data.id
                                             );
@@ -930,11 +962,11 @@ export default function EnterItem() {
                                               },
                                             });
 
-                                            Toast.fire({
+                                            Swal.fire({
                                               icon: "success",
                                               title: "Berhasil Menghapus data",
                                             });
-                                            deleteUserHandle();
+                                            fetchUser();
                                           } catch (error) {
                                             console.log(error);
                                             Swal.fire({

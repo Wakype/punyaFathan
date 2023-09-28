@@ -1,25 +1,47 @@
 import React from "react";
-import Input from "../component/input";
+// import Input from "../../component/input";
 
-import Image from "../assets/image/gambar.png";
-import Image2 from "../assets/image/Logo MyKanten.png";
-import Button from "../component/button";
+import Image from "../../assets/image/background.png";
+// import Image2 from "../assets/image/Logo MyKanten.png";
+import Button from "../../component/button";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { authLogin } from "../redux/actions/authAction";
+import { authLogin } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
+import { FormErrorMessage, Input } from "@chakra-ui/react";
 
 export default function Login() {
+  // --------------------- CONST -------------------------
+
   const navigate = useNavigate();
   const [errorEmail, setErrorEmail] = React.useState("");
   const [errorPassword, setErrorPassword] = React.useState("");
-  // const [errorMessage, setMessageError] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
+  // const [errorMessage, setMessageError] = React.useState('');
+  // --------------------------------------------------------------
+
+  // -------------------------- LET --------------------------
   let dispatch = useDispatch();
+  // let {
+  //   values,
+  //   errors,
+  //   touched,
+  //   handleChange,
+  //   handleBlur,
+  //   handleSubmit,
+  //   isSubmitting,
+  //   setFieldTouched,
+  //   setFieldValue,
+  // } = formik;
+  // --------------------------------------------------------------
+
   const [payload, setPayload] = React.useState({
     email: "",
     password: "",
   });
+
+  // // ------------------------------- Handle Change -----------------------------
   const handleChange = (e) => {
     console.log("change jalan");
     setPayload((payload) => {
@@ -29,7 +51,9 @@ export default function Login() {
       };
     });
   };
+  // --------------------------------------------------------------
 
+  // ------------------------------- Handle Submit -----------------------------
   const handleSubmit = async (e) => {
     console.log("tes");
 
@@ -39,7 +63,7 @@ export default function Login() {
     try {
       const response = await dispatch(authLogin(payload));
       console.log("response", response);
-      if (response?.status === "Success") {
+      if (response?.status === "Success" && response.user.role === "admin") {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -61,7 +85,7 @@ export default function Login() {
         // setMessageError(response?.response?.data?.msg);
         setErrorEmail(response?.response?.data?.msg);
         setErrorPassword(response?.response?.data?.msg);
-        // alert('Email kosong silahkan di isi');
+        Swal.fire("Role anda petugas");
       }
 
       if (payload.password === "") {
@@ -78,8 +102,7 @@ export default function Login() {
       alert("fail anda gagal login");
     }
   };
-
-  const [isLoading, setIsLoading] = React.useState(false);
+  // --------------------------------------------------------------
   return (
     <div className="flex items-center min-h-screen p-6  bg-[#2B2D31]">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-2xl ">
@@ -108,8 +131,8 @@ export default function Login() {
                   <span className="text-gray-700 dark:text-gray-400 ">
                     Email
                   </span>
-                  <Input
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  <input
+                    className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input"
                     placeholder="Email"
                     name="email"
                     // label="email"
@@ -119,12 +142,15 @@ export default function Login() {
                     // placeholder={"Enter your password"}
                   />
                 </label>
+                <FormErrorMessage className="font-sans text-red-500">
+                  {errorEmail}
+                </FormErrorMessage>
                 <label className="block mt-4 text-sm space-y-2">
                   <span className="text-gray-700 dark:text-gray-400">
                     Password
                   </span>
                   <Input
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple text-black dark:focus:shadow-outline-gray form-input"
                     placeholder="password"
                     name="password"
                     // label="password"
@@ -133,6 +159,9 @@ export default function Login() {
                     type="password"
                   />
                 </label>
+                <FormErrorMessage className="font-sans text-red-500">
+                  {errorPassword}
+                </FormErrorMessage>
                 <div className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline">
                   <Button
                     type={"submit"}

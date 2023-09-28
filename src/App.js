@@ -5,11 +5,11 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
-import Login from "./auth/login.jsx";
+import Login from "./page/auth/login";
 import Dashboard from "./page/dashboard/dashboard";
 
-import ForgotPassword from "./auth/forgotP";
-import ResetPassword from "./auth/resetP";
+import ForgotPassword from "./page/auth/forgotP";
+import ResetPassword from "./page/auth/resetP";
 import EnterItem from "./page/dashboard/user";
 import Report from "./page/dashboard/report";
 import OutItem from "./page/dashboard/outItem";

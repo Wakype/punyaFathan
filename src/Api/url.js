@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const client = axios.create({
-  baseURL: "http://172.16.60.86:3060",
+  baseURL: "http://172.16.80.58:3060",
 
   headers: {
     Accept: "application/json",

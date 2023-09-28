@@ -1,25 +1,25 @@
 import React from "react";
-import Input from "../component/input";
+import Input from "../../component/input";
 
-import Image from "../assets/image/background.png";
-import Image2 from "../assets/image/Logo MyKanten.png";
-import Button from "../component/button";
-import Select from "../component/select";
+import Image from "../../assets/image/background.png";
+import Image2 from "../../assets/image/Logo MyKanten.png";
+import Button from "../../component/button";
+import Select from "../../component/select";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { authReset } from "../redux/actions/authAction";
-import { resetPassword } from "../Api/auth";
-export default function ResetPassword() {
+import { authForgot } from "../../redux/actions/authAction";
+import { forgotPassword } from "../../Api/auth";
+export default function ForgotPassword() {
   let navigate = useNavigate();
 
-  const [errorPassword, setErrorPassword] = React.useState("");
+  const [errorEmail, setErrorEmail] = React.useState("");
 
   let dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [payload, setPayload] = React.useState({
-    password: "",
+    email: "",
   });
 
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -40,7 +40,7 @@ export default function ResetPassword() {
     e.preventDefault();
     try {
       setIsLoading(false);
-      const response = await resetPassword(payload);
+      const response = await forgotPassword(payload);
       console.log("response", response);
       if (response?.status === "Success") {
         const Toast = Swal.mixin({
@@ -58,18 +58,16 @@ export default function ResetPassword() {
           icon: "success",
           title: response?.msg,
         });
-        return navigate("/login", { replace: true });
+        return navigate("/reset", { replace: true });
       } else {
         setMessageError(response?.response?.data?.msg);
 
-        setErrorPassword(response?.response?.data?.errors?.Password);
+        setErrorEmail(response?.response?.data?.errors?.email);
 
-        // alert('fail PsetErrorPassword anda belum terdaftar');
+        // alert('fail email anda belum terdaftar');
       }
-      if (payload.password === "") {
-        setErrorPassword("Password wajib diisi");
-      } else if (payload.password.length < 8) {
-        setErrorPassword("Password harus 8 karakter");
+      if (payload.email === "") {
+        setErrorEmail("Email wajib diisi");
       }
     } catch (err) {
       alert("error coba cari solusinya");
@@ -101,21 +99,21 @@ export default function ResetPassword() {
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2 space-y-4">
             <div className="w-full ">
               <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
-                Reset Password
+                Forgot Password
               </h1>
               <form action="" onSubmit={handleSubmit} className="space-y-4">
                 <label className="block text-sm space-y-2">
                   <span className="text-gray-700 dark:text-gray-400">
-                    Password
+                    Email
                   </span>
                   <Input
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="Password"
-                    name="password"
+                    placeholder="Email"
+                    name="email"
                     // label="email"
                     onChange={handleChange}
-                    payload={payload.password}
-                    type="password"
+                    payload={payload.email}
+                    type="email"
                     // placeholder={"Enter your password"}
                   />
                 </label>

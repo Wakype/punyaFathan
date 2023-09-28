@@ -5,7 +5,7 @@ import axios, { syncToken } from "./url";
 
 
 export async function login(payload) {
-  console.log("Berhasil mengambil data =>")
+  console.log("Berhasil Login  =>")
   return axios.post("/auth/login", payload);
 }
 
