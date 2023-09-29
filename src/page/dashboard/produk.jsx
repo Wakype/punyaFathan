@@ -1,26 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import CreateBarang from "../../component/tambahBarang";
 import {
   AiFillHome,
   AiOutlineUser,
   AiFillGolden,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { BiLogOutCircle } from "react-icons/bi";
+import { BiLogOutCircle, Box, DirectboxReceive } from "react-icons/bi";
+import { getAllProduk, updateProduk, deleteProduk } from "../../Api/kantin";
+import UpdateBarang from "../../component/updateBarang";
+import { IconButton } from "@chakra-ui/react";
+import { MdDeleteForever, MdEditDocument } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
-import { deleteProduk, getAllProduk, updateProduk } from "../../Api/kantin";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@nextui-org/react";
-export default function OutItem() {
+import Swal from "sweetalert2";
+
+export default function Produk() {
   const [listBarang, setListBarang] = React.useState([]);
   const [updatedData, setUpdatedData] = React.useState({});
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
+  const [selectedBarang, setSelectedBarang] = React.useState(null); // untuk menyimpan barang yang dipilih
+
+  const openUpdateModal = (barang) => {
+    setSelectedBarang(barang);
+    setIsUpdateModalOpen(true);
+  };
+
+  const openDeleteModal = (barang) => {
+    setSelectedBarang(barang);
+    setIsDeleteModalOpen(true);
+  };
 
   const fetchBarang = async () => {
     try {
@@ -33,24 +44,12 @@ export default function OutItem() {
     }
   };
 
-  const handleUpdate = async (id, updatedData) => {
-    try {
-      // Asumsi Anda memiliki function updateProduk di Api/produk.js
-      await updateProduk(id, updatedData);
-      fetchBarang(); // Muat ulang barang setelah update
-    } catch (error) {
-      console.error("Terjadi kesalahan saat mengupdate data barang:", error);
-    }
+  const handleUpdateClick = (barang) => {
+    openUpdateModal(barang);
   };
-  
-  const handleDelete = async (id) => {
-    try {
-      // Asumsi Anda memiliki function deleteProduk di Api/produk.js
-      await deleteProduk(id);
-      fetchBarang(); // Muat ulang barang setelah dihapus
-    } catch (error) {
-      console.error("Terjadi kesalahan saat menghapus data barang:", error);
-    }
+
+  const handleDeleteClick = (barang) => {
+    openDeleteModal(barang);
   };
 
   const handleLogout = () => {
@@ -65,7 +64,6 @@ export default function OutItem() {
   useEffect(() => {
     fetchBarang();
   }, []);
-
   return (
     <html className="{ 'theme-dark': dark }" x-data="data()" lang="en">
       <head>
@@ -128,7 +126,7 @@ export default function OutItem() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/EnterItem"
+                    href="/dashboard/User"
                   >
                     <FaUserCircle className="w-5 h-5" />
                     <span className="ml-4">User</span>
@@ -137,9 +135,9 @@ export default function OutItem() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/OutItem"
+                    href="/dashboard/Produk"
                   >
-                    <AiFillGolden className="w-[25px] h-[25px] text-white " />
+                    <AiFillGolden className="w-[25px] h-[25px] text-gray-400 " />
 
                     <span className="ml-4">Produk</span>
                   </a>
@@ -306,8 +304,9 @@ export default function OutItem() {
               </ul>
             </div>
           </aside>
+
           <div className="flex flex-col flex-1 w-full">
-            <header className="z-10 py-4 bg-[#ffffff] shadow-md dark:bg-gray-800">
+            <header className="z-10 py-4 bg-[#5e5cf1] shadow-md dark:bg-gray-800">
               <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
                 <button
                   className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
@@ -343,7 +342,7 @@ export default function OutItem() {
                       </svg>
                     </div>
                     <input
-                      className="w-full h-10 pl-8 pr-2 text-sm text-black placeholder-white bg-white border-0 rounded-md dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                      className="w-full h-10 pl-8 pr-2 text-sm text-black placeholder-slate-400 bg-white border-0 rounded-md dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                       type="text"
                       placeholder="Search for projects"
                       aria-label="Search"
@@ -407,22 +406,14 @@ export default function OutItem() {
                         </li>
                         {/* ... other menu items */}
                         <li className="flex">
-                          <a
+                          <Link
+                            to="/login"
                             className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                            href="#"
                             onClick={handleLogout}
                           >
-                            {/* SVG for Logout */}
-                            {/* ... */}
-
-                            <Link
-                              to="/login"
-                              className="text-black flex text-white"
-                            >
-                              <BiLogOutCircle className="w-5 h-5 mr-2" />
-                              Logout
-                            </Link>
-                          </a>
+                            <BiLogOutCircle className="w-5 h-5 mr-2" />
+                            Logout
+                          </Link>
                         </li>
                       </ul>
                     )}
@@ -466,47 +457,211 @@ export default function OutItem() {
                 </ul>
               </div>
             </header>
-            <main className="p-8 overflow-y-auto bg-white">
-              <div>
-                {listBarang && listBarang.length === 0 ? (
-                  <div className="text-center">
-                    <h1 className="font-bold text-black ">
-                      Barang Tidak di temukan
-                    </h1>
-                  </div>
-                ) : (
-                  <table className="w-full table-auto border-collapse">
-                    <thead>
-                      <tr className="rounded-lg">
-                        <th className="border border-black px-4 py-2">Gambar</th>
-                        <th className="border border-black px-4 py-2">Nama Barang</th>
-                        <th className="border border-black px-4 py-2">Stok</th>
-                        <th className="border border-black px-4 py-2">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {listBarang?.map((item, index) => (
-                        <tr key={index}>
-                          <td className="border border-black px-8 py-2">
-                            <img
-                              className="w-28 h-[100px] object-cover"
-                              src={item?.gambarBarang}
-                              alt="Barang"
-                            />
-                          </td>
-                          <td className="border border-black px-4 py-2">{item.namaBarang}</td>
-                          <td className="border border-black px-4 py-2">{item.stok}</td>
-                          <td className="border border-black px-4 py-2 space-x-4">
-                            {/* <button onClick={() => handleUpdate(item.id, updatedData)}>Update</button>
-                            <button onClick={() => handleDelete(item.id)}>Delete</button> */}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+            <main className="h-full overflow-y-auto bg-[#f5f5f5]">
+              <div className="container px-6 mx-auto grid ">
+                <h2 className="my-6 text-2xl font-semibold text-black ">
+                  Produk
+                </h2>
 
-                  
-                )}
+                <html
+                  className="{ 'theme-dark': dark }"
+                  x-data="data()"
+                  lang="en"
+                >
+                  {/* ... kode lain ... */}
+
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => setIsModalOpen(true)}
+                      className="px-3 py-2 rounded-md bg-green-500 mb-5 hover:bg-green-800 hover:text-white"
+                    >
+                      <p className="font-medium">Create Barang</p>
+                    </button>
+                  </div>
+
+                  {/* Modal */}
+                  {isModalOpen && (
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
+                      <div className="bg-white p-8 rounded shadow-md w-1/2 ">
+                        <button
+                          onClick={() => setIsModalOpen(false)}
+                          className="bg-white p-2 rounded shadow-md w-20"
+                        >
+                          Close
+                        </button>
+                        <CreateBarang
+                          afterCreate={() => setIsModalOpen(false)}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ... kode lain ... */}
+                </html>
+                <div>
+                  {listBarang && listBarang.length === 0 ? (
+                    <div className="text-center">
+                      <h1 className="font-bold text-black ">
+                        Barang Tidak di temukan
+                      </h1>
+                    </div>
+                  ) : (
+                    <table className="w-full table-auto border-collapse">
+                      <thead>
+                        <tr className="bg-black rounded-lg">
+                          <th className="border border-gray-700 text-white px-4 py-2">
+                            Gambar
+                          </th>
+                          <th className="border border-gray-700 text-white px-4 py-2">
+                            Nama Barang
+                          </th>
+                          <th className="border border-gray-700 text-white px-4 py-2">
+                            Stok
+                          </th>
+                          <th className="border border-gray-700 text-white px-4 py-2">
+                            kode Barang
+                          </th>
+                          <th className="border border-gray-700 text-white px-4 py-2">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {listBarang?.map((item, index) => (
+                          <tr key={index}>
+                            <td className="border border-gray-700 px-4 py-2">
+                              <img
+                                className="w-20 h-[100px] object-cover ml-10"
+                                src={item?.gambarBarang}
+                                alt="barang"
+                              />
+                            </td>
+                            <td className="border border-gray-700 px-4 py-2">
+                              {item.namaBarang}
+                            </td>
+                            <td className="border border-gray-700 px-4 py-2">
+                              {item.stok}
+                            </td>
+                            <td className="border border-gray-700 px-4 py-2">
+                              {item.kodeBarang}
+                            </td>
+                            <td className="border border-gray-700 px-4 py-2 space-x-4">
+                              <IconButton
+                                className="mr-5 w-16 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
+                                onClick={() => handleUpdateClick(item)}
+                                icon={<MdEditDocument />}
+                              ></IconButton>
+                               <IconButton
+                                    className="w-16 h-8 bg-red-500 pl-2  text-lg text-white rounded hover:bg-red-800"
+                                    icon={<MdDeleteForever />}
+                                    onClick={(e) => {
+                                      Swal.fire({
+                                        title: "Warning!",
+                                        text: "Anda yakin ingin menghapus data ini?",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Hapus",
+                                      }).then(async (result) => {
+                                        if (result.isConfirmed) {
+                                          try {
+                                            e.preventDefault();
+                                            console.log(item);
+                                            const response = await deleteProduk(
+                                              item.id
+                                            );
+                                            console.log(
+                                              "response => ",
+                                              response
+                                            );
+                                            console.log("itemnya", item);
+                                            console.log(item.id);
+                                            console.log("idnya", item.id);
+                                            const Toast = Swal.mixin({
+                                              toast: true,
+                                              position: "top-end",
+                                              showConfirmButton: false,
+                                              timer: 3000,
+                                              timerProgressBar: true,
+                                              didOpen: (toast) => {
+                                                toast.addEventListener(
+                                                  "mouseenter",
+                                                  Swal.stopTimer
+                                                );
+                                                toast.addEventListener(
+                                                  "mouseleave",
+                                                  Swal.resumeTimer
+                                                );
+                                              },
+                                            });
+
+                                            Swal.fire({
+                                              icon: "success",
+                                              title: "Berhasil Menghapus data",
+                                            });
+                                            fetchBarang();
+                                          } catch (error) {
+                                            console.log(error);
+                                            Swal.fire({
+                                              icon: "error",
+                                              title: "Error",
+                                              text: "Ada Suatu Masalah!",
+                                              footer:
+                                                "<a href=console.log(error)>Kenapa saya mengalami masalah ini?</a>",
+                                            });
+                                          }
+                                        }
+                                      });
+                                    }}
+                                  />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      {isUpdateModalOpen && (
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
+                          <div className="bg-white p-8 rounded shadow-md w-1/2 ">
+                            <button
+                              onClick={() => setIsUpdateModalOpen(false)}
+                              className="bg-white p-2 rounded shadow-md w-20"
+                            >
+                              Close
+                            </button>
+                            <UpdateBarang
+                              className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
+                              data={selectedBarang}
+                              afterUpdate={() => setIsUpdateModalOpen(false)}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Delete Modal */}
+                      {/* {isDeleteModalOpen && (
+                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
+                          <div className="bg-white p-8 rounded shadow-md w-1/2 ">
+                            <button onClick={() => setIsDeleteModalOpen(false) } className="w-7 h-7 bg-red-500 font-medium text-white rounded-md mb-10">
+                              X
+                            </button>
+                            <h2 className="mb-20 font-medium">
+                              Apakah Anda yakin ingin menghapus barang ini ?
+                            </h2>
+                            <button
+                              className="w-24 h-8 bg-red-500 pl-1  text-lg text-white rounded hover:bg-red-800 "
+                              onClick={() => {
+                                handleDeleteClick(selectedBarang?.id);
+                                setIsDeleteModalOpen(false);
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      )} */}
+                    </table>
+                  )}
+                </div>
               </div>
             </main>
           </div>

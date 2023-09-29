@@ -98,7 +98,7 @@ export default function Dashboard() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/EnterItem"
+                    href="/dashboard/User"
                   >
                     <FaUserCircle className="w-5 h-5" />
                     <span className="ml-4">User</span>
@@ -107,7 +107,7 @@ export default function Dashboard() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/OutItem"
+                    href="/dashboard/Produk"
                   >
                     <AiFillGolden className="w-[25px] h-[25px] text-white " />
 
@@ -230,12 +230,12 @@ export default function Dashboard() {
                         ></path>
                       </svg> */}
                     </div>
-                    {/* <input
+                    <input
                       className="w-full h-10 pl-8 pr-2 text-sm text-black placeholder-white bg-white border-0 rounded-md dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                       type="text"
                       placeholder="Search for projects"
                       aria-label="Search"
-                    /> */}
+                    />
                   </div>
                 </div>
                 <ul className="flex items-center flex-shrink-0 space-x-6">

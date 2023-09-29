@@ -10,9 +10,9 @@ import Dashboard from "./page/dashboard/dashboard";
 
 import ForgotPassword from "./page/auth/forgotP";
 import ResetPassword from "./page/auth/resetP";
-import EnterItem from "./page/dashboard/user";
 import Report from "./page/dashboard/report";
-import OutItem from "./page/dashboard/outItem";
+import Produk from "./page/dashboard/produk";
+import User from "./page/dashboard/user";
 
 function App() {
   return (
@@ -25,9 +25,9 @@ function App() {
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/dashboard/EnterItem" element={<EnterItem />} />
+      <Route path="/dashboard/User" element={<User />} />
       <Route path="/dashboard/Report" element={<Report />} />
-      <Route path="/dashboard/OutItem" element={<OutItem />} />
+      <Route path="/dashboard/Produk" element={<Produk />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<Navigate to="/login" replace={true} />} />
     </Routes>

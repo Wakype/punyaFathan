@@ -8,7 +8,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import * as Yup from "yup";
-import { Form, FormikProvider, useFormik } from "formik";
+import { Form, formikProvider, useFormik } from "formik";
 import { BiLogOutCircle } from "react-icons/bi";
 import { MdDeleteForever, MdEditDocument } from "react-icons/md";
 import Swal from "sweetalert2";
@@ -50,17 +50,26 @@ import {
 
 import { EditIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 
-export default function EnterItem() {
+export default function User() {
   const [listUser, setListUser] = React.useState([]);
-
   const [isFetch, setIsFetch] = React.useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = React.useState(false);
   const navigate = useNavigate();
-
   const [isProfileMenuOpen, setProfileMenuOpen] = React.useState(false);
   const [isCreatePop, setCreatePop] = React.useState(false);
   const [roleOption, setRoleOption] = useState([]);
 
+  let {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+    setFieldTouched,
+    setFieldValue,
+  } = formik;
   // ----------------------------Create User----------------------------
 
   const formik = useFormik({
@@ -108,17 +117,7 @@ export default function EnterItem() {
 
   ///--------------------------------------------------------
 
-  let {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    isSubmitting,
-    setFieldTouched,
-    setFieldValue,
-  } = formik;
+  
   //--------------------------------------------------------
   //---------------------------- Update User ----------------------------
 
@@ -303,7 +302,7 @@ export default function EnterItem() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/EnterItem"
+                    href="/dashboard/User"
                   >
                     <FaUserCircle className="w-5 h-5" />
                     <span className="ml-4">User</span>
@@ -312,7 +311,7 @@ export default function EnterItem() {
                 <li className="relative px-6 py-3">
                   <a
                     className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/dashboard/OutItem"
+                    href="/dashboard/Produk"
                   >
                     <AiFillGolden className="w-[25px] h-[25px] text-gray-400 " />
 
@@ -649,7 +648,7 @@ export default function EnterItem() {
                   </h2>
                   <div className="">
                     <button
-                      className="mr-10 bg-green-500 w-36 h-10 rounded-md text-white font-semibold"
+                      className="mr-10 bg-green-500 w-36 h-10 rounded-md text-white font-semibold hover:text-white hover:bg-green-800"
                       onClick={() => setCreatePop(true)}
                     >
                       Create User
@@ -797,7 +796,7 @@ export default function EnterItem() {
 
                                 <td className="flex items-center whitespace-nowrap px-2 py-[15%]">
                                   <IconButton
-                                    className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded"
+                                    className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
                                     icon={<MdEditDocument />}
                                     onClick={() => {
                                       setIsShowModalEdit(true);
@@ -818,7 +817,7 @@ export default function EnterItem() {
                                                   Edit Siswa
                                                 </h3>
                                                 <button
-                                                  className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                  className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none "
                                                   onClick={() =>
                                                     setIsShowModalEdit(false)
                                                   }
@@ -918,7 +917,7 @@ export default function EnterItem() {
                                     </>
                                   ) : null}
                                   <IconButton
-                                    className="w-8 h-8 bg-red-500 pl-2  text-lg text-white rounded"
+                                    className="w-8 h-8 bg-red-500 pl-2  text-lg text-white rounded hover:bg-red-800"
                                     icon={<MdDeleteForever />}
                                     onClick={(e) => {
                                       Swal.fire({
