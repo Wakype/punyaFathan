@@ -8,7 +8,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import * as Yup from "yup";
-import { Form, formikProvider, useFormik } from "formik";
+import { Form, formikProvider, useFormik, formik } from "formik";
 import { BiLogOutCircle } from "react-icons/bi";
 import { MdDeleteForever, MdEditDocument } from "react-icons/md";
 import Swal from "sweetalert2";
@@ -59,17 +59,6 @@ export default function User() {
   const [isCreatePop, setCreatePop] = React.useState(false);
   const [roleOption, setRoleOption] = useState([]);
 
-  let {
-    values,
-    errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit,
-    isSubmitting,
-    setFieldTouched,
-    setFieldValue,
-  } = formik;
   // ----------------------------Create User----------------------------
 
   const formik = useFormik({
@@ -99,7 +88,7 @@ export default function User() {
             toast.addEventListener("mouseleave", Swal.resumeTimer);
           },
         });
-        setCreatePop(false)
+        setCreatePop(false);
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambah data",
@@ -117,26 +106,30 @@ export default function User() {
 
   ///--------------------------------------------------------
 
-  
   //--------------------------------------------------------
   //---------------------------- Update User ----------------------------
+  const [isUpdateUser, setIsUpdateUser] = React.useState(null);
+  const openUpdateModal = (user) => {
+    setIsUpdateUser(user);
+    setIsShowModalEdit(true);
+  };
 
   const formikEdit = useFormik({
     initialValues: {
       nama: "",
       email: "",
-      password: "",
+      role: "",
     },
     validationSchema: Yup.object().shape({
       nama: Yup.string().required("nama Siswa harus diisi"),
       email: Yup.string().email().required("Email harus diisi"),
-      password: Yup.string().required(" harus diisi"),
+      role: Yup.string().required("role harus diisi"),
     }),
     onSubmit: async (values) => {
       try {
         setIsFetch(true);
         const response = await updateUser(values.id, values);
-        console.log("id", values.id);
+        console.log("id user =>", values.id);
         console.log("response => ", response);
         const Toast = Swal.mixin({
           toast: true,
@@ -164,12 +157,23 @@ export default function User() {
     },
   });
 
+  const handleUpdateUser = (user) => {
+    console.log("masuk get Id =>", user);
+
+    formikEdit.setFieldValue("nama", user?.nama);
+    formikEdit.setFieldValue("email", user?.email);
+    formikEdit.setFieldValue("role", user?.role);
+
+    openUpdateModal(user);
+  };
+
   //--------------------------------------------------------
   // ---------------------------- Log Out ----------------------------
   const handleLogout = () => {
     // Menghapus token dari localStorage
     localStorage.removeItem("token");
     try {
+      // console.log(remove)
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -184,11 +188,29 @@ export default function User() {
 
       Toast.fire({
         icon: "success",
+        title: "berhasil Log Out",
       });
       return navigate("/login", { replace: true });
     } catch (error) {}
     // Redirect atau melakukan hal lain sesuai kebutuhan
-    alert("Anda telah logout");
+    // alert("Anda telah logout");
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title: "berhasil Log Out",
+    });
+    return navigate("/login", { replace: true });
   };
   // --------------------------------------------------------
   //-------------------------------- List User --------------------------------------------------------
@@ -235,6 +257,18 @@ export default function User() {
     console.log("berhasil di delete", id);
   };
   //--------------------------------------------------------
+
+  let {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+    setFieldTouched,
+    setFieldValue,
+  } = formik;
   // ---------------------------Use Effect---------------------------
   useEffect(() => {
     fetchUser();
@@ -754,15 +788,15 @@ export default function User() {
                 <TableContainer>
                   <Table
                     size="md"
-                    className="w-[95%] h-[75%] space-x-10 border border-collapse border-black rounded-lg"
+                    className="w-[90%] h-[75%] space-x-10 border border-collapse border-black rounded-lg"
                   >
                     <Thead>
-                      <Tr className="space-x-5 bg-black text-white">
+                      <Tr className="space-x-5 bg-black text-white font-sans">
                         <Th>No</Th>
                         <Th>Nama</Th>
-                        <Th>email</Th>
-                        <Th>role</Th>
-                        <Th>Action</Th>
+                        <Th>Email</Th>
+                        <Th>Role</Th>
+                        <Th className="ml-60">Action</Th>
                       </Tr>
                     </Thead>
 
@@ -781,16 +815,16 @@ export default function User() {
                                 key={index}
                                 className="border-b dark:border-neutral-500"
                               >
-                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 font-medium h-5">
+                                <td className="whitespace-nowrap h-2  px-16  py-8 font-medium h-5">
                                   {index + 1}.
                                 </td>
-                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 h-2  ">
+                                <td className="whitespace-nowrap h-2  px-16  py-8 h-2  ">
                                   {data?.nama}
                                 </td>
-                                <td className="whitespace-nowrap h-2 border-l-2 border-black px-10 py-8 h-2  ">
+                                <td className="whitespace-nowrap h-2  px-16  py-8 h-2  ">
                                   {data?.email}
                                 </td>
-                                <td className="whitespace-nowrap h-2 border-l-2 border-r-2 border-black px-2 py-8 h-2  ">
+                                <td className="whitespace-nowrap h-2  px-8 py-8 h-2  ">
                                   {data?.role}
                                 </td>
 
@@ -799,7 +833,7 @@ export default function User() {
                                     className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
                                     icon={<MdEditDocument />}
                                     onClick={() => {
-                                      setIsShowModalEdit(true);
+                                      handleUpdateUser(data);
                                     }}
                                   />
                                   {isShowModalEdit ? (
@@ -814,10 +848,10 @@ export default function User() {
                                               {/*header*/}
                                               <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                                 <h3 className="text-3xl font-semibold">
-                                                  Edit Siswa
+                                                  Update Petugas
                                                 </h3>
                                                 <button
-                                                  className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none "
+                                                  className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                                                   onClick={() =>
                                                     setIsShowModalEdit(false)
                                                   }
@@ -831,12 +865,14 @@ export default function User() {
                                               <div className="p-10 w-[400px] h-full">
                                                 <h1 className="pt-3">nama</h1>
                                                 <Input
-                                                  className="w-[100%] h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
+                                                  className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white "
                                                   placeholder="nama"
                                                   name={"nama"}
-                                                  value={formik.values.nama}
-                                                  onChange={formik.handleChange}
-                                                  onBlur={formik.handleBlur}
+                                                  value={formikEdit.values.nama}
+                                                  onChange={
+                                                    formikEdit.handleChange
+                                                  }
+                                                  onBlur={formikEdit.handleBlur}
                                                   iserror={
                                                     formik.touched.nama &&
                                                     formik.errors.nama
@@ -845,12 +881,16 @@ export default function User() {
                                                 />
                                                 <h1 className="pt-3">Email</h1>
                                                 <Input
-                                                  className="w-[100%] mt-2 h-10 border-2 p-1 text-sm border-gray-400 focus:border-sky-600 rounded-md"
+                                                  className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
                                                   placeholder="Email"
                                                   name={"email"}
-                                                  value={formik.values.email}
-                                                  onChange={formik.handleChange}
-                                                  onBlur={formik.handleBlur}
+                                                  value={
+                                                    formikEdit.values.email
+                                                  }
+                                                  onChange={
+                                                    formikEdit.handleChange
+                                                  }
+                                                  onBlur={formikEdit.handleBlur}
                                                   iserror={
                                                     formik.touched.email &&
                                                     formik.errors.email
@@ -860,34 +900,35 @@ export default function User() {
                                                   }
                                                 />
                                                 <h1 className="pt-3">Role</h1>
-                                                <Select
-                                                  name="role"
-                                                  id="role"
-                                                  onChange={formik.handleChange}
-                                                  value={formik.values.role}
-                                                >
-                                                  <option
-                                                    value={formik.values.role}
-                                                    className="text-center"
-                                                  >
-                                                    --Please choose Role--
-                                                  </option>
-                                                  <option
+                                                <InputGroup>
+                                                  <Select
+                                                    className="block w-full h-8 mt-1 text-sm border border-black rounded-md focus:outline-none focus:shadow-outline-purple text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                                    name="role"
+                                                    id="role"
+                                                    onChange={
+                                                      formikEdit.handleChange
+                                                    }
+                                                    onBlur={
+                                                      formikEdit.handleBlur
+                                                    }
                                                     value={
-                                                      formik.values.petugas
+                                                      formikEdit.values.role
                                                     }
                                                   >
-                                                    Petugas
-                                                  </option>
-                                                  <option
-                                                    value={
-                                                      formik.values
-                                                        .administrator
-                                                    }
-                                                  >
-                                                    Administrator
-                                                  </option>
-                                                </Select>
+                                                    <option
+                                                      value={""}
+                                                      className="text-center"
+                                                    >
+                                                      --Please choose Role--
+                                                    </option>
+                                                    <option value={"petugas"}>
+                                                      Petugas
+                                                    </option>
+                                                    <option value={"admin"}>
+                                                      Administrator
+                                                    </option>
+                                                  </Select>
+                                                </InputGroup>
                                               </div>
                                               {/*footer*/}
                                               <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -904,9 +945,9 @@ export default function User() {
                                                   className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                   type="submit"
                                                 >
-                                                  {isFetch
-                                                    ? "Sedang Mengedit"
-                                                    : "Edit"}
+                                                  {isSubmitting
+                                                    ? "Sedang Membuat"
+                                                    : "Save"}
                                                 </button>
                                               </div>
                                             </div>

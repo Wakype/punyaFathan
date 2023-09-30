@@ -26,6 +26,27 @@ export function authLogin(payload) {
   };
 }
 
+
+export function authMe(payload) {
+  return async (dispatch) => {
+    try {
+      let response = await authMeProcess();
+      let data = response.data;
+      console.log("authme =>",data)
+      dispatch({
+        type: 'login',
+        email: data?.user?.email,
+        password: data?.user?.password,
+        isAuth: true,
+      });
+      Cookies.set('myapps_token', data?.token);
+      return data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+}
 // export function authMe(payload) {
 //   return async (dispatch) => {
 //     try {

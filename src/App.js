@@ -13,6 +13,7 @@ import ResetPassword from "./page/auth/resetP";
 import Report from "./page/dashboard/report";
 import Produk from "./page/dashboard/produk";
 import User from "./page/dashboard/user";
+import ProtectRoute from "./protect-route/protectRoute";
 
 function App() {
   return (
@@ -23,12 +24,39 @@ function App() {
         element={<ResetPassword />}
       />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
-      {/* <Route path="/register" element={<Register />} /> */}
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/dashboard/User" element={<User />} />
-      <Route path="/dashboard/Report" element={<Report />} />
-      <Route path="/dashboard/Produk" element={<Produk />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectRoute>
+            <Dashboard />
+          </ProtectRoute>
+        }
+      />
+      <Route
+        path="/dashboard/User"
+        element={
+          <ProtectRoute>
+            <User />
+          </ProtectRoute>
+        }
+      />
+      <Route
+        path="/dashboard/Report"
+        element={
+          <ProtectRoute>
+            <Report />
+          </ProtectRoute>
+        }
+      />
+      <Route
+        path="/dashboard/Produk"
+        element={
+          <ProtectRoute>
+            <Produk />
+          </ProtectRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/login" replace={true} />} />
     </Routes>
 

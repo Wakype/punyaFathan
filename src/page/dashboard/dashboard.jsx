@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   AiFillHome,
@@ -8,13 +8,20 @@ import {
   AiOutlineShoppingCart,
   AiFillDatabase,
 } from "react-icons/ai";
-import { BiLogOutCircle } from "react-icons/bi";
+import { BiLogIn, BiLogOutCircle } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
 import { getAllProduk } from "../../Api/kantin";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
+  const auth = useSelector((state) => state.auth);
+  const nama = useSelector((state) => state.nama);
+  const email = useSelector((state) => state.email)
+  console.log("email =>", email)
+  console.log("authorization =>", auth)
   const [listBarang, setListBarang] = React.useState([]);
-
+  const navigate = useNavigate();
   const fetchBarang = async () => {
     try {
       const response = await getAllProduk();
@@ -28,9 +35,45 @@ export default function Dashboard() {
   const handleLogout = () => {
     // Menghapus token dari localStorage
     localStorage.removeItem("token");
+    try {
+      // console.log(remove)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
 
+      Toast.fire({
+        icon: "success",
+        title:"berhasil Log Out"
+      });
+      return navigate("/login", { replace: true });
+    } catch (error) {}
     // Redirect atau melakukan hal lain sesuai kebutuhan
-    alert("Anda telah logout");
+    // alert("Anda telah logout");
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
+
+    Toast.fire({
+      icon: "success",
+      title:"berhasil Log Out"
+    });
+    return navigate("/login", { replace: true });
   };
   const [isProfileMenuOpen, setProfileMenuOpen] = React.useState(false);
   useEffect(() => {
@@ -115,87 +158,13 @@ export default function Dashboard() {
                   </a>
                 </li>
 
-                <li className="relative">
-                  <button
-                    onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
-                  >
-                    <div cls>
-                      <div className="w-10 h-10 bg-gray-400 rounded-full mt-56 ml-5"></div>
-                    </div>
-                  </button>
-
-                  {isProfileMenuOpen && (
-                    <ul
-                      className="absolute right-0 w-56 p-2 mt-1 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700 mr-2"
-                      aria-label="submenu"
-                    >
-                      {/* Menu items... */}
-                      <li className="flex">
-                        <a
-                          className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                          href="#"
-                        >
-                          {/* SVG for Profile */}
-                          {/* ... */}
-                          <span>Profile</span>
-                        </a>
-                      </li>
-                      {/* ... other menu items */}
-                      <li className="flex ">
-                        <a
-                          className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                          href="#"
-                          onClick={handleLogout}
-                        >
-                          <Link
-                            to="/login"
-                            className="text-black flex text-white"
-                            // onClick={handleLogout}
-                          >
-                            <BiLogOutCircle className="w-5 h-5 mr-2" />
-                            Logout
-                          </Link>
-                        </a>
-                      </li>
-                      {/* <div className="w-10 h-10 ">fathan</div> */}
-                    </ul>
-                  )}
-                  <template x-if="isNotificationsMenuOpen">
-                    <ul className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
-                      <li className="flex">
-                        <a
-                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                          href="#"
-                        >
-                          <span>Messages</span>
-                          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
-                            13
-                          </span>
-                        </a>
-                      </li>
-                      <li className="flex">
-                        <a
-                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                          href="#"
-                        ></a>
-                      </li>
-                      <li className="flex">
-                        <a
-                          className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                          href="#"
-                        >
-                          <span>Alerts</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </template>
-                </li>
+                
               </ul>
             </div>
           </aside>
 
           <div className="flex flex-col flex-1 w-full">
-            <header className="z-10 py-4 bg-[#ffffff] shadow-md dark:bg-gray-800">
+          <header className="z-10 py-4 bg-[#ffffff] shadow-md dark:bg-gray-800">
               <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
                 <button
                   className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
@@ -217,7 +186,7 @@ export default function Dashboard() {
                 <div className="flex justify-center flex-1 lg:mr-32">
                   <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
                     <div className="absolute inset-y-0 flex items-center pl-2">
-                      {/* <svg
+                      <svg
                         className="w-4 h-4"
                         aria-hidden="true"
                         fill="currentColor"
@@ -228,7 +197,7 @@ export default function Dashboard() {
                           d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                           clip-rule="evenodd"
                         ></path>
-                      </svg> */}
+                      </svg>
                     </div>
                     <input
                       className="w-full h-10 pl-8 pr-2 text-sm text-black placeholder-white bg-white border-0 rounded-md dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
@@ -270,7 +239,86 @@ export default function Dashboard() {
                       </template>
                     </button>
                   </li>
+                  <li className="relative">
+                    <button
+                      onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
+                    >
+                      <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
+                    </button>
 
+                    {isProfileMenuOpen && (
+                      <ul
+                        className="absolute right-0 w-56 h-36 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
+                        aria-label="submenu"
+                      >
+                        {/* Menu items... */}
+                        <li className="flex space-x-5 h-24">
+
+                          <a
+                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                            href="#"
+                          >
+                             <div className="w-14 h-14 bg-gray-400 rounded-full"></div>
+                            {/* SVG for Profile */}
+                            {/* ... */}
+                           <div className="grid">
+                           <span className="ml-4">{nama?.nama}</span>
+                            <span className="ml-4">{email?.email}</span>
+                            <span className="ml-4">Profile</span>
+                           </div>
+                          </a>
+                        </li>
+                        {/* ... other menu items */}
+                        <li className="flex">
+                          <a
+                            className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                            href="#"
+                            onClick={handleLogout}
+                          >
+                            {/* SVG for Logout */}
+                            {/* ... */}
+                            <Link
+                              to="/login"
+                              className="text-red-500 flex font-normal"
+                              // onClick={handleLogout}
+                            >
+                              <BiLogIn className="w-5 h-5 mr-2 text-red-500" />
+                              Log out
+                            </Link>
+                          </a>
+                        </li>
+                      </ul>
+                    )}
+                    <template x-if="isNotificationsMenuOpen">
+                      <ul className="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700">
+                        <li className="flex">
+                          <a
+                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                            href="#"
+                          >
+                            <span>Messages</span>
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600">
+                              13
+                            </span>
+                          </a>
+                        </li>
+                        <li className="flex">
+                          <a
+                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                            href="#"
+                          ></a>
+                        </li>
+                        <li className="flex">
+                          <a
+                            className="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                            href="#"
+                          >
+                            <span>Alerts</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </template>
+                  </li>
                   <li className="relative">
                     <button
                       className="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"

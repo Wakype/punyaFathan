@@ -1,7 +1,7 @@
 const initialState = {
-  username: "",
+  nama: "",
   email: "",
-  password: "",
+  role: "",
   isAuth: false,
 };
 
@@ -9,9 +9,9 @@ export const authProgress = (state = initialState, action) => {
   if (action.type === "login") {
     return {
       ...state,
-      username: action.username,
+      nama: action.nama,
       email: action.email,
-      password: action.password,
+      role: action.role,
       isAuth: action.isAuth,
     };
   }

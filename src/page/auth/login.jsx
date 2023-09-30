@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { authLogin } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
 import { FormErrorMessage, Input } from "@chakra-ui/react";
+import { icons } from "react-icons/lib";
 
 export default function Login() {
   // --------------------- CONST -------------------------

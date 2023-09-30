@@ -19,3 +19,8 @@ export async function forgotPassword(payload) {
 export async function resetPassword(payload) {
   return axios.post("/auth/reset-password/:id/:token", payload);
 }
+
+export async function authMeProcess() {
+  syncToken()
+  return axios.get("/authMe");
+}

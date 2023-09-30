@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import * as Yup from "yup";
 import CreateBarang from "../../component/tambahBarang";
 import {
   AiFillHome,
@@ -8,12 +9,18 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { BiLogOutCircle, Box, DirectboxReceive } from "react-icons/bi";
-import { getAllProduk, updateProduk, deleteProduk } from "../../Api/kantin";
+import {
+  getAllProduk,
+  updateProduk,
+  deleteProduk,
+  createProduk,
+} from "../../Api/kantin";
 import UpdateBarang from "../../component/updateBarang";
-import { IconButton } from "@chakra-ui/react";
+import { IconButton, Input, InputGroup, Select } from "@chakra-ui/react";
 import { MdDeleteForever, MdEditDocument } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useFormik } from "formik";
 
 export default function Produk() {
   const [listBarang, setListBarang] = React.useState([]);
@@ -22,11 +29,6 @@ export default function Produk() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = React.useState(false);
   const [selectedBarang, setSelectedBarang] = React.useState(null); // untuk menyimpan barang yang dipilih
-
-  const openUpdateModal = (barang) => {
-    setSelectedBarang(barang);
-    setIsUpdateModalOpen(true);
-  };
 
   const openDeleteModal = (barang) => {
     setSelectedBarang(barang);
@@ -60,7 +62,146 @@ export default function Produk() {
 
     // Anda tidak perlu navigate ke "/login" di sini karena <Link> akan mengurusnya
   };
+
+  // ----------------------------Create User----------------------------
+  const [isCreatePop, setCreatePop] = React.useState(false);
+  const [isFetch, setIsFetch] = React.useState(false);
+
+  const [isShowModalEdit, setIsShowModalEdit] = React.useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      gambarBarang: "",
+      namaBarang: "",
+      stok: "",
+      kodeBarang: "",
+    },
+    validationSchema: Yup.object().shape({
+      gambarBarang: Yup.mixed().nullable().default(undefined),
+      namaBarang: Yup.string().required("nama barang harus diisi"),
+      stok: Yup.string().required("stok harus diisi"),
+      kodeBarang: Yup.string().required("kode harus diisi"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        setIsFetch(true);
+        const response = await createProduk(values);
+        console.log("response => ", response);
+        console.log("value => ", values);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        setCreatePop(false);
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil Menambah data",
+        });
+        getAllProduk();
+        // resetForm({ values: "" });
+        // setIsShowModalEdit(false);
+      } catch (error) {
+        console.log("err", error);
+        console.log({ values });
+      } finally {
+        setIsFetch(false);
+        console.log("finally");
+      }
+    },
+  });
+
+  ///--------------------------------------------------------
+
+  //---------------------------- Update User ----------------------------
+  const [isUpdateItem, setIsUpdateItem] = React.useState(null);
+  const openUpdateModal = (item) => {
+    setIsUpdateItem(item);
+    setIsShowModalEdit(true);
+  };
+
+  const formikEdit = useFormik({
+    initialValues: {
+      gambarBarang: "",
+      namaBarang: "",
+      stok: "",
+      kodeBarang: "",
+    },
+    validationSchema: Yup.object().shape({
+      gambarBarang: Yup.mixed().nullable().default(undefined),
+      namaBarang: Yup.string().email().required("nama barang harus diisi"),
+      stok: Yup.string().required("stok harus diisi"),
+      kodeBarang: Yup.string().required("kode harus diisi"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        setIsFetch(true);
+        const response = await updateProduk(values.id, values);
+        console.log("id user =>", values.id);
+        console.log("response => ", response);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Berhasil Mengedit data",
+        });
+        getAllProduk();
+        setIsShowModalEdit(false);
+      } catch (error) {
+        console.log(error);
+        console.log({values})
+      } finally {
+
+        setIsFetch(false);
+      }
+    },
+  });
+
+  const handleUpdateItem = (item) => {
+    console.log("masuk get barang Id =>", item);
+
+    formikEdit.setFieldValue("namaBarang ", item?.gambarBarang);
+    console.log("gambar barang =>", item?.gambarBarang);
+    formikEdit.setFieldValue("namaBarang ", item?.namaBarang);
+    console.log("nama barang =>", item?.namaBarang);
+    formikEdit.setFieldValue("stokBarang", item?.stok);
+    console.log("stok =>", item?.stok);
+    formikEdit.setFieldValue("kodeBarang", item?.kodeBarang);
+    console.log("kode =>", item?.kodeBarang);
+    openUpdateModal(item);
+  };
+
+  //--------------------------------------------------------
   const [isProfileMenuOpen, setProfileMenuOpen] = React.useState(false);
+  // <----------------------------------- formik ------------------------------------->
+  let {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+    setFieldTouched,
+    setFieldValue,
+  } = formik;
+  //
   useEffect(() => {
     fetchBarang();
   }, []);
@@ -472,10 +613,10 @@ export default function Produk() {
 
                   <div className="flex justify-end">
                     <button
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => setCreatePop(true)}
                       className="px-3 py-2 rounded-md bg-green-500 mb-5 hover:bg-green-800 hover:text-white"
                     >
-                      <p className="font-medium">Create Barang</p>
+                      <p className="font-medium">Create Barang !</p>
                     </button>
                   </div>
 
@@ -526,116 +667,342 @@ export default function Produk() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody className="border border-x-black border-b-black">
                         {listBarang?.map((item, index) => (
                           <tr key={index}>
-                            <td className="border border-gray-700 px-4 py-2">
+                            <td className=" px-4 py-2">
                               <img
                                 className="w-20 h-[100px] object-cover ml-10"
                                 src={item?.gambarBarang}
                                 alt="barang"
                               />
                             </td>
-                            <td className="border border-gray-700 px-4 py-2">
-                              {item.namaBarang}
-                            </td>
-                            <td className="border border-gray-700 px-4 py-2">
-                              {item.stok}
-                            </td>
-                            <td className="border border-gray-700 px-4 py-2">
-                              {item.kodeBarang}
-                            </td>
-                            <td className="border border-gray-700 px-4 py-2 space-x-4">
+                            <td className=" px-4 py-2">{item.namaBarang}</td>
+                            <td className=" px-4 py-2">{item.stok}</td>
+                            <td className=" px-4 py-2">{item.kodeBarang}</td>
+                            <td className=" px-4 py-2 space-x-4">
                               <IconButton
                                 className="mr-5 w-16 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
-                                onClick={() => handleUpdateClick(item)}
+                                onClick={() => handleUpdateItem(item)}
                                 icon={<MdEditDocument />}
                               ></IconButton>
-                               <IconButton
-                                    className="w-16 h-8 bg-red-500 pl-2  text-lg text-white rounded hover:bg-red-800"
-                                    icon={<MdDeleteForever />}
-                                    onClick={(e) => {
-                                      Swal.fire({
-                                        title: "Warning!",
-                                        text: "Anda yakin ingin menghapus data ini?",
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#3085d6",
-                                        cancelButtonColor: "#d33",
-                                        confirmButtonText: "Hapus",
-                                      }).then(async (result) => {
-                                        if (result.isConfirmed) {
-                                          try {
-                                            e.preventDefault();
-                                            console.log(item);
-                                            const response = await deleteProduk(
-                                              item.id
-                                            );
-                                            console.log(
-                                              "response => ",
-                                              response
-                                            );
-                                            console.log("itemnya", item);
-                                            console.log(item.id);
-                                            console.log("idnya", item.id);
-                                            const Toast = Swal.mixin({
-                                              toast: true,
-                                              position: "top-end",
-                                              showConfirmButton: false,
-                                              timer: 3000,
-                                              timerProgressBar: true,
-                                              didOpen: (toast) => {
-                                                toast.addEventListener(
-                                                  "mouseenter",
-                                                  Swal.stopTimer
-                                                );
-                                                toast.addEventListener(
-                                                  "mouseleave",
-                                                  Swal.resumeTimer
-                                                );
-                                              },
-                                            });
 
-                                            Swal.fire({
-                                              icon: "success",
-                                              title: "Berhasil Menghapus data",
-                                            });
-                                            fetchBarang();
-                                          } catch (error) {
-                                            console.log(error);
-                                            Swal.fire({
-                                              icon: "error",
-                                              title: "Error",
-                                              text: "Ada Suatu Masalah!",
-                                              footer:
-                                                "<a href=console.log(error)>Kenapa saya mengalami masalah ini?</a>",
-                                            });
-                                          }
-                                        }
-                                      });
-                                    }}
-                                  />
+                              <IconButton
+                                className="w-16 h-8 bg-red-500 pl-2  text-lg text-white rounded hover:bg-red-800"
+                                icon={<MdDeleteForever />}
+                                onClick={(e) => {
+                                  Swal.fire({
+                                    title: "Warning!",
+                                    text: "Anda yakin ingin menghapus data ini?",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Hapus",
+                                  }).then(async (result) => {
+                                    if (result.isConfirmed) {
+                                      try {
+                                        e.preventDefault();
+                                        console.log(item);
+                                        const response = await deleteProduk(
+                                          item.id
+                                        );
+                                        console.log("response => ", response);
+                                        console.log("itemnya", item);
+                                        console.log(item.id);
+                                        console.log("idnya", item.id);
+                                        const Toast = Swal.mixin({
+                                          toast: true,
+                                          position: "top-end",
+                                          showConfirmButton: false,
+                                          timer: 3000,
+                                          timerProgressBar: true,
+                                          didOpen: (toast) => {
+                                            toast.addEventListener(
+                                              "mouseenter",
+                                              Swal.stopTimer
+                                            );
+                                            toast.addEventListener(
+                                              "mouseleave",
+                                              Swal.resumeTimer
+                                            );
+                                          },
+                                        });
+
+                                        Swal.fire({
+                                          icon: "success",
+                                          title: "Berhasil Menghapus data",
+                                        });
+                                        fetchBarang();
+                                      } catch (error) {
+                                        console.log(error);
+                                        Swal.fire({
+                                          icon: "error",
+                                          title: "Error",
+                                          text: "Ada Suatu Masalah!",
+                                          footer:
+                                            "<a href=console.log(error)>Kenapa saya mengalami masalah ini?</a>",
+                                        });
+                                      }
+                                    }
+                                  });
+                                }}
+                              />
                             </td>
                           </tr>
                         ))}
                       </tbody>
-                      {isUpdateModalOpen && (
-                        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 ">
-                          <div className="bg-white p-8 rounded shadow-md w-1/2 ">
-                            <button
-                              onClick={() => setIsUpdateModalOpen(false)}
-                              className="bg-white p-2 rounded shadow-md w-20"
-                            >
-                              Close
-                            </button>
-                            <UpdateBarang
-                              className="mr-5 w-8 h-8 bg-blue-500 ml-10 text-lg text-white rounded hover:bg-blue-800"
-                              data={selectedBarang}
-                              afterUpdate={() => setIsUpdateModalOpen(false)}
-                            />
+                      {isShowModalEdit ? (
+                        <>
+                          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                            <form onSubmit={formikEdit.handleSubmit}>
+                              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                {/*content*/}
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                  {/*header*/}
+                                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                    <h3 className="text-3xl font-semibold">
+                                      Update Barang
+                                    </h3>
+                                    <button
+                                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                      onClick={() => setIsShowModalEdit(false)}
+                                    >
+                                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        ×
+                                      </span>
+                                    </button>
+                                  </div>
+                                  {/* body */}
+                                  <div className="p-10 w-[700px] h-full flex">
+                                    <div className="mb-4 w-64 h-20">
+                                      <label className="block text-gray-700 text-sm font-bold mb-2">
+                                        Gambar Barang:
+                                      </label>
+
+                                      <input
+                                        id="gambarBarang"
+                                        className="w-fit cursor-pointer text-primary"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                          const file = e.target.files?.[0]; // Use optional chaining to handle null
+                                          if (file) {
+                                            // Check file size
+                                            if (file.size > 10 * 1024 * 1024) {
+                                              alert("File size exceeds 10 MB.");
+                                              return;
+                                            }
+
+                                            // Set the image source and display file size
+                                            setFieldValue("gambarBarang", file);
+                                          }
+                                        }}
+                                      />
+                                      <img
+                                        src={formikEdit?.values.gambarBarang}
+                                        className="w-64 h-5 mt-2 border border-black"
+                                      />
+                                    </div>
+
+                                    <div className="space-x-5">
+                                      <h1 className="pt-3 ml-5">Nama Barang</h1>
+                                      <Input
+                                        className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white "
+                                        placeholder="nama Barang"
+                                        name={"namaBarang"}
+                                        value={formikEdit?.values?.namaBarang}
+                                        onChange={formikEdit.handleChange}
+                                        onBlur={formikEdit.handleBlur}
+                                        iserror={
+                                          formikEdit.touched.namaBarang &&
+                                          formikEdit.errors.namaBarang
+                                        }
+                                        texterror={formikEdit.errors.namaBarang}
+                                      />
+                                      <p>{}</p>
+                                      <h1 className="pt-3">Stok</h1>
+                                      <InputGroup>
+                                        <Input
+                                          className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                          placeholder="Stok"
+                                          type="number"
+                                          name={"stok"}
+                                          value={formikEdit?.values?.stok}
+                                          onChange={formikEdit.handleChange}
+                                          onBlur={formikEdit.handleBlur}
+                                          iserror={
+                                            formikEdit.touched.stok &&
+                                            formikEdit.errors.stok
+                                          }
+                                          texterror={formikEdit.errors.stok}
+                                        />
+                                      </InputGroup>
+                                      <h1 className="pt-3">kode Barang</h1>
+                                      <Input
+                                        className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                        placeholder="kode Barang"
+                                        name={"kodeBarang"}
+                                        value={formikEdit.values.kodeBarang}
+                                        onChange={formikEdit.handleChange}
+                                        onBlur={formikEdit.handleBlur}
+                                        iserror={
+                                          formikEdit.touched.kodeBarang &&
+                                          formikEdit.errors.kodeBarang
+                                        }
+                                        texterror={formikEdit.errors.kodeBarang}
+                                      />
+                                    </div>
+                                  </div>
+                                  {/*footer*/}
+                                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                    <button
+                                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                      type="button"
+                                      onClick={() => setIsShowModalEdit(false)}
+                                    >
+                                      Tutup
+                                    </button>
+                                    <button
+                                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                      type="submit"
+                                    >
+                                      {isSubmitting ? "Sedang Membuat" : "Save"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
                           </div>
-                        </div>
-                      )}
+                          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                        </>
+                      ) : null}
+                      {isCreatePop ? (
+                        <>
+                          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                            <form onSubmit={formik.handleSubmit}>
+                              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                {/*content*/}
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                  {/*header*/}
+                                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                    <h3 className="text-3xl font-semibold">
+                                      Create Barang
+                                    </h3>
+                                    <button
+                                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                      onClick={() => setCreatePop(false)}
+                                    >
+                                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        ×
+                                      </span>
+                                    </button>
+                                  </div>
+                                  {/* body */}
+                                  <div className="p-10 w-[700px] h-full flex">
+                                    <div className="mb-4 w-64 h-20">
+                                      <label className="block text-gray-700 text-sm font-bold mb-2">
+                                        Gambar Barang:
+                                      </label>
+
+                                      <input
+                                        id="gambarBarang"
+                                        className="w-fit cursor-pointer text-primary"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                          const file = e.target.files?.[0]; // Use optional chaining to handle null
+                                          if (file) {
+                                            // Check file size
+                                            if (file.size > 10 * 1024 * 1024) {
+                                              alert("File size exceeds 10 MB.");
+                                              return;
+                                            }
+
+                                            // Set the image source and display file size
+                                            setFieldValue("gambarBarang", file);
+                                          }
+                                        }}
+                                      />
+                                      {/* <img
+                                        value={formik?.values.gambarBarang}
+                                        className="w-64 h-5 mt-2 border border-black"
+                                      /> */}
+                                    </div>
+
+                                    <div className="space-x-5">
+                                      <h1 className="pt-3 ml-5">Nama Barang</h1>
+                                      <Input
+                                        className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white "
+                                        placeholder="nama"
+                                        name={"namaBarang"}
+                                        value={formik.values.namaBarang}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        iserror={
+                                          formik.touched.namaBarang &&
+                                          formik.errors.namaBarang
+                                        }
+                                        texterror={formik.errors.namaBarang}
+                                      />
+                                      <h1 className="pt-3">kode Barang</h1>
+                                      <Input
+                                        className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                        placeholder="kode Barang"
+                                        name={"kodeBarang"}
+                                        value={formik.values.kodeBarang}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        iserror={
+                                          formik.touched.kodeBarang &&
+                                          formik.errors.kodeBarang
+                                        }
+                                        texterror={formik.errors.kodeBarang}
+                                      />
+                                      <h1 className="pt-3">Stok</h1>
+                                      <InputGroup>
+                                        <Input
+                                          className="block w-full h-8 mt-1 text-sm border border-black rounded-md p-2 focus:outline-none focus:shadow-outline-purple dark:text-black dark:focus:shadow-outline-gray form-input bg-white"
+                                          placeholder="Stok"
+                                          type="number"
+                                          name={"stok"}
+                                          value={formik.values.stok}
+                                          onChange={formik.handleChange}
+                                          onBlur={formik.handleBlur}
+                                          iserror={
+                                            formik.touched.stok &&
+                                            formik.errors.stok
+                                          }
+                                          texterror={formik.errors.stok}
+                                        />
+                                      </InputGroup>
+                                    </div>
+                                  </div>
+                                  {/*footer*/}
+                                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                    <button
+                                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                      type="button"
+                                      onClick={() => setCreatePop(false)}
+                                    >
+                                      Tutup
+                                    </button>
+                                    <button
+                                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                      type="submit"
+                                    >
+                                      {isSubmitting
+                                        ? "Sedang Membuat"
+                                        : "Create"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                        </>
+                      ) : null}
 
                       {/* Delete Modal */}
                       {/* {isDeleteModalOpen && (
