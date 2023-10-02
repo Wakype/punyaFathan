@@ -7,8 +7,12 @@ export async function getUser(){
 }
 
 export async function getDetailUser(id){
-    console.log("id",id)
-    return axios.get(`user/detail/${id}`)
+    console.log("user id =>",id)
+    return axios.get(`user/detail/${id}`,{
+        headers: {
+            "Content-Type": "multipart/form-data",
+          },
+    })
 }
 
 export async function createUser(payload){

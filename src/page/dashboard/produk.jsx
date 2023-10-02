@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import CreateBarang from "../../component/tambahBarang";
 import {
@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import { useFormik } from "formik";
 
 export default function Produk() {
+  const navigate = useNavigate();
   const [listBarang, setListBarang] = React.useState([]);
   const [updatedData, setUpdatedData] = React.useState({});
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -54,14 +55,51 @@ export default function Produk() {
     openDeleteModal(barang);
   };
 
+  // ---------------------------- Log Out ----------------------------
   const handleLogout = () => {
-    // Hapus token dari localStorage atau sessionStorage
+    // Menghapus token dari localStorage
     localStorage.removeItem("token");
+    try {
+      // console.log(remove)
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
 
-    // Jika Anda menggunakan Redux, dispatch action untuk mengatur ulang state pengguna
+      Toast.fire({
+        icon: "success",
+        title: "berhasil Log Out",
+      });
+      return navigate("/login", { replace: true });
+    } catch (error) {}
+    // Redirect atau melakukan hal lain sesuai kebutuhan
+    // alert("Anda telah logout");
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener("mouseenter", Swal.stopTimer);
+        toast.addEventListener("mouseleave", Swal.resumeTimer);
+      },
+    });
 
-    // Anda tidak perlu navigate ke "/login" di sini karena <Link> akan mengurusnya
+    Toast.fire({
+      icon: "success",
+      title: "berhasil Log Out",
+    });
+    return navigate("/login", { replace: true });
   };
+  // --------------------------------------------------------
 
   // ----------------------------Create User----------------------------
   const [isCreatePop, setCreatePop] = React.useState(false);
@@ -708,9 +746,9 @@ export default function Produk() {
                                           item.id
                                         );
                                         console.log("response => ", response);
-                                        console.log("itemnya", item);
-                                        console.log(item.id);
-                                        console.log("idnya", item.id);
+                                        console.log("itemnya =>", item);
+                                        console.log("item id =>",item.id);
+                                       
                                         const Toast = Swal.mixin({
                                           toast: true,
                                           position: "top-end",

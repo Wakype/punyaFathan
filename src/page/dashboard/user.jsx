@@ -153,6 +153,7 @@ export default function User() {
         console.log(error);
       } finally {
         setIsFetch(false);
+        console.log({values})
       }
     },
   });
@@ -213,6 +214,7 @@ export default function User() {
     return navigate("/login", { replace: true });
   };
   // --------------------------------------------------------
+
   //-------------------------------- List User --------------------------------------------------------
 
   const [data, setData] = useState([]);
