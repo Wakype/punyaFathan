@@ -60,7 +60,7 @@ function App() {
         }
       />
       <Route
-      // Page Profile
+      // Page Profile* note profile ke-2
         path="/profile" 
         element={
           <ProtectRoute>
@@ -77,6 +77,11 @@ function App() {
     // - laporan laba rugi (gw gak tau klo yang ini soalnya belum di kasih tau ama pak nur / pak ihsan) 
     // intinya laba rugi itu (buat keuangan dari transaksi keuangan yang berjalan selama satu bulan atau satu tahun baik transaksi yang menghasilkan kerugian maupun laba,
     // Akumulasi dari total finansial tersebut yang akan menjadi laporan laba rugi perusahaan di periode tertentu.) 
+
+    // *note : kalo profile terserah mau ngambil refrensi dari mana aja designnya gw recomended kayak instagram, tapi klo ada yang lebih bagus ya terserah lo  
+
+    // total page :
+    // login , forgot password, reset password , user + crud, produk + crud , laporan pemasukan , laporan stok habis , laporan laba rugi, profile ,edit profile
     </div>
   );
 }
