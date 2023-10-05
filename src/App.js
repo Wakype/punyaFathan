@@ -17,50 +17,7 @@ import ProtectRoute from "./protect-route/protectRoute";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route
-        path="/auth/reset-password/:id/:token"
-        element={<ResetPassword />}
-      />
-      <Route path="/forgotPassword" element={<ForgotPassword />} />
-
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectRoute>
-            <Dashboard />
-          </ProtectRoute>
-        }
-      />
-      <Route
-        path="/dashboard/User"
-        element={
-          <ProtectRoute>
-            <User />
-          </ProtectRoute>
-        }
-      />
-      <Route
-        path="/dashboard/Report"
-        element={
-          <ProtectRoute>
-            <Report />
-          </ProtectRoute>
-        }
-      />
-      <Route
-        path="/dashboard/Produk"
-        element={
-          <ProtectRoute>
-            <Produk />
-          </ProtectRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/login" replace={true} />} />
-    </Routes>
-
-    // </div>
+    <></>
   );
 }
 
