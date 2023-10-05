@@ -72,8 +72,8 @@ function App() {
     </Routes> */}
 
     // *note : itu laporan ada 3 page : 
-    // - laporan barang masuk
-    // - laporan stok habis 
+    // - laporan barang masuk = itu laporan barang masuk dari petugas kayaknya ada di masuki oleh siapa gitu
+    // - laporan stok habis = itu nampilin barang yang stoknya habis
     // - laporan laba rugi (gw gak tau klo yang ini soalnya belum di kasih tau ama pak nur / pak ihsan) 
     // intinya laba rugi itu (buat keuangan dari transaksi keuangan yang berjalan selama satu bulan atau satu tahun baik transaksi yang menghasilkan kerugian maupun laba,
     // Akumulasi dari total finansial tersebut yang akan menjadi laporan laba rugi perusahaan di periode tertentu.) 
