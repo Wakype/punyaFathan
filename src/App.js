@@ -5,73 +5,33 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
+import { Dashboard, Laporan, LayoutAdmin, Login, Produk, User } from "./pages";
 
 function App() {
   return (
     <div>
-      silakan isi sendiri ya !!!  😚😚😚
+      <Routes>
+        <Route path="/" element={<Login />} />
+        {/* <Route
+          path="/auth/reset-password/:id/:token"
+          element={<ResetPassword />}
+        />
+        <Route path="/forgotPassword" element={<ForgotPassword />} /> */}
 
+        <Route path="/admin" element={<LayoutAdmin />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="user" element={<User />} />
+          <Route path="produk" element={<Produk />} />
+          <Route path="laporan" element={<Laporan />} />
+        </Route>
+        {/* <Route path="/dashboard/User" element={<User />} />
+        <Route path="/dashboard/Report" element={<Report />} />
+        <Route path="/dashboard/Produk" element={<Produk />} />
+        <Route path="/profile" element={<Profile />} /> */}
+        <Route path="*" element={<Navigate to="/" replace={true} />} />
+      </Routes>
 
-      {/* <Routes>
-      // Page Login
-      <Route path="/login" element={<Login />} />
-      <Route
-      // Page Reset Password
-        path="/auth/reset-password/:id/:token"
-        element={<ResetPassword />}
-      />
-      // Page Forgot password
-      <Route path="/forgotPassword" element={<ForgotPassword />} />
-
-      <Route
-        path="/dashboard"
-        element={
-          // Page Dashboard 
-          <ProtectRoute>
-            <Dashboard />
-          </ProtectRoute>
-        }
-      />
-      <Route
-        path="/dashboard/User"
-        // Page User Crud
-        element={
-          <ProtectRoute>
-            <User />
-          </ProtectRoute>
-        }
-      />
-      <Route
-      // Page Laporan*
-        path="/dashboard/Report"
-        element={
-          <ProtectRoute>
-            <Report />
-          </ProtectRoute>
-        }
-      />
-      <Route
-      // Page produk + CRUD
-        path="/dashboard/Produk"
-        element={
-          <ProtectRoute>
-            <Produk />
-          </ProtectRoute>
-        }
-      />
-      <Route
-      // Page Profile* note profile ke-2
-        path="/profile" 
-        element={
-          <ProtectRoute>
-            <Profile />
-          </ProtectRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/login" replace={true} />} />
-    </Routes> */}
-
-    // *note : itu laporan ada 3 page : 
+      {/* // *note : itu laporan ada 3 page : 
     // - laporan barang masuk = itu laporan barang masuk dari petugas kayaknya ada di masuki oleh siapa gitu
     // - laporan stok habis = itu nampilin barang yang stoknya habis
     // - laporan laba rugi (gw gak tau klo yang ini soalnya belum di kasih tau ama pak nur / pak ihsan) 
@@ -81,7 +41,7 @@ function App() {
     // *note : kalo profile terserah mau ngambil refrensi dari mana aja designnya gw recomended kayak instagram, tapi klo ada yang lebih bagus ya terserah lo  
 
     // total page :
-    // login , forgot password, reset password , user + crud, produk + crud , laporan pemasukan , laporan stok habis , laporan laba rugi, profile ,edit profile
+    // login , forgot password, reset password , user + crud, produk + crud , laporan pemasukan , laporan stok habis , laporan laba rugi, profile ,edit profile */}
     </div>
   );
 }
