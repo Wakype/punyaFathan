@@ -5,13 +5,15 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
-import { Dashboard, Laporan, LayoutAdmin, Login, Produk, User } from "./pages";
+import { Dashboard, Laporan, LayoutAdmin, Login, LupaPassword, Produk, Profile, ResetPassword, User } from "./pages";
 
 function App() {
   return (
     <div>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/lupa-password" element={<LupaPassword />} />
+        <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
         {/* <Route
           path="/auth/reset-password/:id/:token"
           element={<ResetPassword />}
@@ -23,6 +25,7 @@ function App() {
           <Route path="user" element={<User />} />
           <Route path="produk" element={<Produk />} />
           <Route path="laporan" element={<Laporan />} />
+          <Route path="settings" element={<Profile />} />
         </Route>
         {/* <Route path="/dashboard/User" element={<User />} />
         <Route path="/dashboard/Report" element={<Report />} />

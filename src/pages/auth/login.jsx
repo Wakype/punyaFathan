@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { CustomButton, CustomInput } from "../../components";
-import { Link, useNavigate, useRoutes } from "react-router-dom";
-import { Form, FormikProvider, useFormik } from "formik";
-import * as yup from "yup";
+import React, { useState } from 'react';
+import { CustomButton, CustomInput } from '../../components';
+import { Link, useNavigate, useRoutes } from 'react-router-dom';
+import { Form, FormikProvider, useFormik } from 'formik';
+import * as yup from 'yup';
 import {
   Button,
   FormControl,
@@ -12,8 +12,8 @@ import {
   InputGroup,
   InputRightElement,
   VStack,
-} from "@chakra-ui/react";
-import { useAuthService } from "./services/auth.service";
+} from '@chakra-ui/react';
+import { useAuthService } from './services/auth.service';
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -24,10 +24,10 @@ const Login = () => {
   const loginSchema = yup.object().shape({
     email: yup
       .string()
-      .default("")
-      .required("Email tidak boleh kosong")
-      .email("Gunakan Format Email"),
-    password: yup.string().default("").required("Passowrd tidak boleh kosong"),
+      .default('')
+      .required('Email tidak boleh kosong')
+      .email('Gunakan Format Email'),
+    password: yup.string().default('').required('Passowrd tidak boleh kosong'),
   });
 
   const formik = useFormik({
@@ -36,7 +36,7 @@ const Login = () => {
       ...loginSchema.getDefault(),
     },
     onSubmit: async (values) => {
-      return navigate("/admin/dashboard");
+      return navigate('/admin/dashboard');
 
       // mutate(values, {
       //   onSuccess: () => {
@@ -97,56 +97,66 @@ const Login = () => {
                     placeholder="Ketik email"
                   />
 
-                  <FormErrorMessage color={"red"} fontWeight="normal">
+                  <FormErrorMessage color={'red'} fontWeight="normal">
                     {errors?.email}
                   </FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!!errors?.password}>
-                  <FormLabel
-                    color="#3B82F6"
-                    htmlFor="password"
-                    fontWeight="semibold"
-                  >
-                    Password
-                  </FormLabel>
-                  <InputGroup>
-                    <Input
-                      className="w-full"
-                      type={show ? "text" : "password"}
-                      id="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder="************"
-                    />
-                    <InputRightElement width="4.5rem">
-                      <Button
-                        h="1.75rem"
-                        size="sm"
-                        onClick={() => {
-                          setShow(!show);
-                        }}
-                      >
-                        {show ? "Hide" : "Show"}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
+                <div className="w-full">
+                  <FormControl isInvalid={!!errors?.password}>
+                    <FormLabel
+                      color="#3B82F6"
+                      htmlFor="password"
+                      fontWeight="semibold"
+                    >
+                      Password
+                    </FormLabel>
+                    <InputGroup>
+                      <Input
+                        className="w-full"
+                        type={show ? 'text' : 'password'}
+                        id="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="************"
+                      />
+                      <InputRightElement width="4.5rem">
+                        <Button
+                          h="1.75rem"
+                          size="sm"
+                          onClick={() => {
+                            setShow(!show);
+                          }}
+                        >
+                          {show ? 'Hide' : 'Show'}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
 
-                  <FormErrorMessage size={"xs"} color={"red"} fontWeight="normal">
-                    {errors?.password}
-                  </FormErrorMessage>
-                </FormControl>
+                    <FormErrorMessage
+                      size={'xs'}
+                      color={'red'}
+                      fontWeight="normal"
+                    >
+                      {errors?.password}
+                    </FormErrorMessage>
+                  </FormControl>
+                  <div className="w-full text-right mt-2">
+                    <Link className="" to={'lupa-password'}>Lupa password</Link>
+                  </div>
+                </div>
 
                 <Button
+                  className="mt-10"
                   type="submit"
-                  width={"100%"}
+                  width={'100%'}
                   height={10}
                   borderRadius={10}
                   isLoading={isLoading}
                   isDisabled={isLoading}
-                  color={"white"}
-                  backgroundColor={"#3B82F6"}
-                  _hover={{backgroundColor: '#1B62D6'}}
+                  color={'white'}
+                  backgroundColor={'#3B82F6'}
+                  _hover={{ backgroundColor: '#1B62D6' }}
                 >
                   Login
                 </Button>

@@ -1,13 +1,13 @@
-import { PhoneIcon, SearchIcon } from "@chakra-ui/icons";
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import React from "react";
+import { PhoneIcon, SearchIcon } from '@chakra-ui/icons';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import React from 'react';
 import {
   FaCube,
   FaMoneyBills,
   FaUpRightFromSquare,
   FaUserGroup,
-} from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+} from 'react-icons/fa6';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -26,57 +26,75 @@ const Dashboard = () => {
     const newGreen = Math.min(Math.floor(green * multiplier), 255);
     const newBlue = Math.min(Math.floor(blue * multiplier), 255);
 
-    const hexColor = `#${newRed.toString(16).padStart(2, "0")}${newGreen
+    const hexColor = `#${newRed.toString(16).padStart(2, '0')}${newGreen
       .toString(16)
-      .padStart(2, "0")}${newBlue.toString(16).padStart(2, "0")}`;
+      .padStart(2, '0')}${newBlue.toString(16).padStart(2, '0')}`;
 
     return hexColor;
   }
 
   const dash = [
     {
-      title: "Total Barang",
-      isi: "150",
+      title: 'Total Barang',
+      isi: '150',
       icon: <FaCube color="#000000" />,
     },
     {
-      title: "Laba Rugi",
-      isi: "150",
+      title: 'Laba Rugi',
+      isi: '150',
       icon: <FaMoneyBills color="#000000" />,
     },
     {
-      title: "User",
-      isi: "150",
+      title: 'User',
+      isi: '150',
       icon: <FaUserGroup color="#000000" />,
     },
   ];
   const shortcut = [
     {
-      title: "User",
-      isi: "150",
-      to: "user",
+      title: 'User',
+      isi: '150',
+      to: 'user',
     },
     {
-      title: "Produk",
-      isi: "150",
-      to: "produk",
+      title: 'Produk',
+      isi: '150',
+      to: 'produk',
     },
     {
-      title: "Laporan",
-      isi: "150",
-      to: "laporan",
+      title: 'Laporan',
+      isi: '150',
+      to: 'laporan',
     },
     {
-      title: "Profile",
-      isi: "150",
-      to: "profile",
+      title: 'Profile',
+      isi: '150',
+      to: 'profile',
     },
   ];
   return (
     <div className="w-full grid grid-cols-8 gap-x-5">
       <section className="col-span-6">
         <div className="mb-10">
-          
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="#1B62D6" />
+            </InputLeftElement>
+            <Input
+              id="search"
+              type="search"
+              variant={'filled'}
+              color={'black'}
+              // value={values.email}
+              // onChange={handleChange}
+              // onBlur={handleBlur}
+              placeholder="Ketik sesuatu..."
+              border={'1px solid #1B62D6'}
+              _hover={{
+                border: '1px solid #3B82F6',
+              }}
+            />
+          </InputGroup>
         </div>
 
         <div className="w-full mb-10">
@@ -120,9 +138,9 @@ const Dashboard = () => {
                   className="hover:shadow-2xl hover:scale-105 cursor-pointer flex flex-col items-start justify-center w-full p-7 rounded-lg transition-all ease-in-out"
                 >
                   <div className={`bg-white p-3 rounded-lg mb-2`}>
-                    <FaUpRightFromSquare />
+                    <FaUpRightFromSquare color="#000000" />
                   </div>
-                  <p className="text-white text-[20px]">Halaman {_.title}</p>
+                  <p className="text-white text-[18px]">Halaman {_.title}</p>
                 </div>
               );
             })}

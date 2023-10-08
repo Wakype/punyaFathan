@@ -4,10 +4,15 @@
 @import 'tailwindcss/utilities';
 
 * {
-    font-family: 'Poppins', sans-serif;
-    
+  font-family: 'Poppins', sans-serif;
 }
 
-p, h1 {
-    color: black
+p,
+h1,
+td {
+  color: black;
+}
+
+th {
+  color: white !important;
 }
